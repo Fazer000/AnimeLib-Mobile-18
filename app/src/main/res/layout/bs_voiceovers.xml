@@ -74,7 +74,7 @@
         app:tabGravity="fill" />
 
     <!-- Players List Container with loading overlay -->
-    <FrameLayout
+    <com.example.animelib.ui.MaxHeightFrameLayout
         android:id="@+id/playersContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -83,10 +83,19 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvVoiceovers"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="120dp"
+            android:layout_height="match_parent"
             android:clipToPadding="false"
             android:paddingBottom="0dp" />
+
+        <TextView
+            android:id="@+id/tvEmptyVoiceovers"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:gravity="center"
+            android:text="Нет доступных озвучек"
+            android:textColor="@color/secondary_text_color"
+            android:textSize="14sp"
+            android:visibility="gone" />
 
         <FrameLayout
             android:id="@+id/menuLoadingOverlay"
@@ -105,5 +114,5 @@
                 app:trackCornerRadius="8dp"
                 app:trackThickness="4dp" />
         </FrameLayout>
-    </FrameLayout>
+    </com.example.animelib.ui.MaxHeightFrameLayout>
 </LinearLayout>

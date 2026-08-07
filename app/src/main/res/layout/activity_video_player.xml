@@ -73,6 +73,108 @@
                 app:show_previous_button="false"
                 app:show_shuffle_button="false"
                 app:show_subtitle_button="false" />
+
+            <!-- Swipe seek preview -->
+            <TextView
+                android:id="@+id/seekPreviewText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="80dp"
+                android:background="@drawable/video_time_background"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp"
+                android:text="+0 c"
+                android:textColor="@color/player_item_inactive_text"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <!-- Hold-to-speed plaque -->
+            <TextView
+                android:id="@+id/holdSpeedToast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="80dp"
+                android:background="@drawable/video_time_background"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="4dp"
+                android:text="2x"
+                android:textColor="@color/player_item_inactive_text"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <!-- Double tap skip indicator - Left (backward) -->
+            <LinearLayout
+                android:id="@+id/skipIndicatorLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:layout_marginStart="130dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:alpha="0"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/skipIconLeft"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/ic_skip"
+                    android:rotation="180"
+                    android:alpha="0.9"
+                    app:tint="@color/white_color" />
+
+                <TextView
+                    android:id="@+id/skipTextLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/video_time_background"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp"
+                    android:text="-85 сек"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Double tap skip indicator - Right (forward) -->
+            <LinearLayout
+                android:id="@+id/skipIndicatorRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="130dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:alpha="0"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/skipIconRight"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/ic_skip"
+                    android:alpha="0.9"
+                    app:tint="@color/white_color" />
+
+                <TextView
+                    android:id="@+id/skipTextRight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/video_time_background"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp"
+                    android:text="+85 сек"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
         </FrameLayout>
 
         <!-- Container for Portrait Mode (below player) -->
@@ -107,38 +209,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="center" />
 
-    <!-- Swipe seek preview -->
-    <TextView
-        android:id="@+id/seekPreviewText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="80dp"
-        android:background="@drawable/video_time_background"
-        android:paddingHorizontal="14dp"
-        android:paddingVertical="8dp"
-        android:text="+0 c"
-        android:textColor="@color/player_item_inactive_text"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:visibility="gone" />
-
-    <!-- Hold-to-speed plaque -->
-    <TextView
-        android:id="@+id/holdSpeedToast"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="80dp"
-        android:background="@drawable/video_time_background"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="4dp"
-        android:text="2x"
-        android:textColor="@color/player_item_inactive_text"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:visibility="gone" />
-
     <!-- Download progress plaque -->
     <TextView
         android:id="@+id/downloadProgressText"
@@ -154,73 +224,6 @@
         android:textColor="@color/player_item_inactive_text"
         android:textSize="13sp"
         android:visibility="gone" />
-
-    <!-- Double tap skip indicator - Left (backward) -->
-    <LinearLayout
-        android:id="@+id/skipIndicatorLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|start"
-        android:layout_marginStart="130dp"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:alpha="0"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:src="@drawable/ic_skip"
-            android:rotation="180"
-            android:alpha="0.9"
-            app:tint="@color/white_color" />
-
-        <TextView
-            android:id="@+id/skipTextLeft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/video_time_background"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="6dp"
-            android:text="-85 сек"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <!-- Double tap skip indicator - Right (forward) -->
-    <LinearLayout
-        android:id="@+id/skipIndicatorRight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|end"
-        android:layout_marginEnd="130dp"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:alpha="0"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:src="@drawable/ic_skip"
-            android:alpha="0.9"
-            app:tint="@color/white_color" />
-
-        <TextView
-            android:id="@+id/skipTextRight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/video_time_background"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="6dp"
-            android:text="+85 сек"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-    </LinearLayout>
 
     <!-- Skip segment button -->
     <com.google.android.material.button.MaterialButton

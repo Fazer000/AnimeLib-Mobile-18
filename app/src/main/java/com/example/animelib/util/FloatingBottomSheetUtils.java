@@ -139,11 +139,10 @@ public class FloatingBottomSheetUtils {
             behavior.setFitToContents(true);
             behavior.setHideable(true);
             behavior.setSkipCollapsed(true);
-            behavior.setHalfExpandedRatio(0.999f);
+            behavior.setPeekHeight(0);
             behavior.setExpandedOffset(0);
             behavior.setGestureInsetBottomIgnored(true);
             behavior.setMaxHeight(screenHeight);
-            behavior.setPeekHeight(screenHeight);
             behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
             if (bottomSheet.getTag() == null) {
@@ -151,15 +150,20 @@ public class FloatingBottomSheetUtils {
                 behavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
                     @Override
                     public void onStateChanged(@NonNull View bottomSheetView, int newState) {
-                        if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                            if (dialog.isShowing()) {
+                        if (newState == BottomSheetBehavior.STATE_COLLAPSED ||
+                            newState == BottomSheetBehavior.STATE_HALF_EXPANDED) {
+                            bottomSheetView.post(() -> {
+                                if (dialog != null && dialog.isShowing()) {
+                                    behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                                }
+                            });
+                        } else if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                            if (dialog != null && dialog.isShowing()) {
                                 try {
                                     dialog.setDismissWithAnimation(false);
                                     dialog.dismiss();
                                 } catch (Exception ignored) {}
                             }
-                        } else if (newState == BottomSheetBehavior.STATE_COLLAPSED || newState == BottomSheetBehavior.STATE_HALF_EXPANDED) {
-                            behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                         }
                     }
 
@@ -171,7 +175,7 @@ public class FloatingBottomSheetUtils {
 
             bottomSheet.post(() -> {
                 if (dialog.isShowing()) {
-                    behavior.setPeekHeight(screenHeight);
+                    behavior.setPeekHeight(0);
                     behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 }
             });

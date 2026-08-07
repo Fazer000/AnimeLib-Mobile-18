@@ -159,6 +159,7 @@ public class GesturesManager {
         }
 
         updateSkipDurationText(DOUBLE_TAP_SKIP_SECONDS);
+        updateIndicatorSizesForPortrait(isPortraitMode);
         setupGestures();
     }
     
@@ -980,6 +981,76 @@ public class GesturesManager {
         this.isPortraitMode = isPortrait;
         if (verticalGesturesManager != null) {
             verticalGesturesManager.setPortraitMode(isPortrait);
+        }
+        updateIndicatorSizesForPortrait(isPortrait);
+    }
+
+    private void updateIndicatorSizesForPortrait(boolean isPortrait) {
+        if (context == null) return;
+        float density = context.getResources().getDisplayMetrics().density;
+
+        if (skipIndicatorLeft != null) {
+            android.view.ViewGroup.LayoutParams lp = skipIndicatorLeft.getLayoutParams();
+            if (lp instanceof android.widget.FrameLayout.LayoutParams) {
+                android.widget.FrameLayout.LayoutParams params = (android.widget.FrameLayout.LayoutParams) lp;
+                params.leftMargin = (int) ((isPortrait ? 32 : 130) * density);
+                skipIndicatorLeft.setLayoutParams(params);
+            }
+            View iconLeft = skipIndicatorLeft.findViewById(com.example.animelib.R.id.skipIconLeft);
+            if (iconLeft != null) {
+                android.view.ViewGroup.LayoutParams iconParams = iconLeft.getLayoutParams();
+                int iconSize = (int) ((isPortrait ? 38 : 64) * density);
+                iconParams.width = iconSize;
+                iconParams.height = iconSize;
+                iconLeft.setLayoutParams(iconParams);
+            }
+            if (skipTextLeft != null) {
+                skipTextLeft.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, isPortrait ? 11f : 14f);
+                int padH = (int) ((isPortrait ? 8 : 12) * density);
+                int padV = (int) ((isPortrait ? 3 : 6) * density);
+                skipTextLeft.setPadding(padH, padV, padH, padV);
+            }
+        }
+
+        if (skipIndicatorRight != null) {
+            android.view.ViewGroup.LayoutParams lp = skipIndicatorRight.getLayoutParams();
+            if (lp instanceof android.widget.FrameLayout.LayoutParams) {
+                android.widget.FrameLayout.LayoutParams params = (android.widget.FrameLayout.LayoutParams) lp;
+                params.rightMargin = (int) ((isPortrait ? 32 : 130) * density);
+                skipIndicatorRight.setLayoutParams(params);
+            }
+            View iconRight = skipIndicatorRight.findViewById(com.example.animelib.R.id.skipIconRight);
+            if (iconRight != null) {
+                android.view.ViewGroup.LayoutParams iconParams = iconRight.getLayoutParams();
+                int iconSize = (int) ((isPortrait ? 38 : 64) * density);
+                iconParams.width = iconSize;
+                iconParams.height = iconSize;
+                iconRight.setLayoutParams(iconParams);
+            }
+            if (skipTextRight != null) {
+                skipTextRight.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, isPortrait ? 11f : 14f);
+                int padH = (int) ((isPortrait ? 8 : 12) * density);
+                int padV = (int) ((isPortrait ? 3 : 6) * density);
+                skipTextRight.setPadding(padH, padV, padH, padV);
+            }
+        }
+
+        if (seekPreviewText != null) {
+            android.view.ViewGroup.LayoutParams lp = seekPreviewText.getLayoutParams();
+            if (lp instanceof android.widget.FrameLayout.LayoutParams) {
+                android.widget.FrameLayout.LayoutParams params = (android.widget.FrameLayout.LayoutParams) lp;
+                params.topMargin = (int) ((isPortrait ? 20 : 80) * density);
+                seekPreviewText.setLayoutParams(params);
+            }
+        }
+
+        if (holdSpeedToast != null) {
+            android.view.ViewGroup.LayoutParams lp = holdSpeedToast.getLayoutParams();
+            if (lp instanceof android.widget.FrameLayout.LayoutParams) {
+                android.widget.FrameLayout.LayoutParams params = (android.widget.FrameLayout.LayoutParams) lp;
+                params.topMargin = (int) ((isPortrait ? 20 : 80) * density);
+                holdSpeedToast.setLayoutParams(params);
+            }
         }
     }
     
