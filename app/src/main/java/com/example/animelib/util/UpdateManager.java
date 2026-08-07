@@ -22,7 +22,7 @@ import okhttp3.Response;
 
 public class UpdateManager {
     private static final String TAG = "UpdateManager";
-    public static final String GITHUB_RELEASES_API = "https://api.github.com/repos/Fazer000/AnimeLib-Mobile/releases/latest";
+    public static final String GITHUB_RELEASES_API = "https://api.github.com/repos/Fazer000/AnimeLib-Mobile-Updater/releases/latest";
 
     public interface CheckUpdateCallback {
         void onUpdateCheckResult(boolean hasUpdate, UpdateInfo updateInfo, String currentVersion);
@@ -87,7 +87,7 @@ public class UpdateManager {
                     String releaseName = json.has("name") && !json.get("name").isJsonNull() ? json.get("name").getAsString() : tagName;
                     String body = json.has("body") && !json.get("body").isJsonNull() ? json.get("body").getAsString() : "Описание изменений отсутствует.";
                     String publishedAt = json.has("published_at") && !json.get("published_at").isJsonNull() ? json.get("published_at").getAsString() : "";
-                    String htmlUrl = json.has("html_url") && !json.get("html_url").isJsonNull() ? json.get("html_url").getAsString() : "https://github.com/Fazer000/AnimeLib-Mobile";
+                    String htmlUrl = json.has("html_url") && !json.get("html_url").isJsonNull() ? json.get("html_url").getAsString() : "https://github.com/Fazer000/AnimeLib-Mobile-Updater";
 
                     String apkUrl = htmlUrl;
                     long apkSize = 0;

@@ -85,3 +85,53 @@ jobs:
           app/build/outputs/apk/debug/*.apk
           app/build/outputs/bundle/release/*.aab
 
+    - name: Calculate Next Version Tag for Updater Repo
+      id: bump_updater_version
+      if: github.ref == 'refs/heads/main'
+      run: |
+        python3 -c '
+        import json, urllib.request, re, os
+
+        url = "https://api.github.com/repos/Fazer000/AnimeLib-Mobile-Updater/releases/latest"
+        latest_tag = ""
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "GitHub-Actions", "Accept": "application/vnd.github.v3+json"})
+            with urllib.request.urlopen(req) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                latest_tag = data.get("tag_name", "")
+        except Exception as e:
+            print(f"Could not fetch latest release tag: {e}")
+
+        print(f"Latest tag found in AnimeLib-Mobile-Updater: \"{latest_tag}\"")
+
+        if not latest_tag:
+            new_tag = "v1.7.4"
+        else:
+            clean = latest_tag.lstrip("vV")
+            parts = clean.split(".")
+            major = parts[0] if len(parts) > 0 else "1"
+            minor = parts[1] if len(parts) > 1 else "7"
+            patch_str = parts[2] if len(parts) > 2 else "3"
+            patch_num = int(re.sub(r"[^0-9].*", "", patch_str) or 3) + 1
+            new_tag = f"v{major}.{minor}.{patch_num}"
+
+        print(f"Calculated new tag for Updater repo: {new_tag}")
+        with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+            f.write(f"tag_name={new_tag}\n")
+        '
+
+    - name: Create GitHub Release in AnimeLib-Mobile-Updater Repo
+      if: github.ref == 'refs/heads/main'
+      uses: softprops/action-gh-release@v2
+      with:
+        repository: Fazer000/AnimeLib-Mobile-Updater
+        token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+        tag_name: ${{ steps.bump_updater_version.outputs.tag_name }}
+        name: Release ${{ steps.bump_updater_version.outputs.tag_name }}
+        draft: false
+        prerelease: false
+        files: |
+          app/build/outputs/apk/release/*.apk
+          app/build/outputs/apk/debug/*.apk
+          app/build/outputs/bundle/release/*.aab
+

@@ -109,7 +109,7 @@ public class UpdateActivity extends AppCompatActivity {
             try {
                 String url = updateInfo.getHtmlUrl() != null && !updateInfo.getHtmlUrl().isEmpty()
                         ? updateInfo.getHtmlUrl()
-                        : "https://github.com/Fazer000/AnimeLib-Mobile";
+                        : "https://github.com/Fazer000/AnimeLib-Mobile-Updater";
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 startActivity(intent);
             } catch (Exception e) {
