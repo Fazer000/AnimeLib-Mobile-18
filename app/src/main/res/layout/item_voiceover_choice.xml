@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/itemContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="0dp"
+    android:layout_marginVertical="3dp"
+    android:background="@drawable/episode_item_normal"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:gravity="center_vertical">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvVoiceoverName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_text_color"
+            android:textSize="14sp"
+            android:fontFamily="@font/open_sans_semibold" />
+
+        <TextView
+            android:id="@+id/tvVoiceoverDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/accent_text_color"
+            android:textSize="12sp"
+            android:fontFamily="@font/open_sans" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivCheck"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_check"
+        android:visibility="gone"
+        app:tint="@color/secondary_text_color"
+        android:contentDescription="Selected" />
+
+</LinearLayout>

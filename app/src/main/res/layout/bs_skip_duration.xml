@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    android:overScrollMode="never"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="20dp">
+
+        <View
+            android:layout_width="36dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bottom_sheet_handle"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp">
+
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:padding="6dp"
+                app:tint="@color/accent_text_color"
+                android:background="@drawable/button_close_background"
+                android:src="@drawable/ic_arrow_back"
+                android:scaleType="fitCenter"
+                android:contentDescription="Back"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Пропуск опенинга"
+                android:textColor="@color/primary_text_color"
+                android:textStyle="bold"
+                android:fontFamily="@font/open_sans_bold"
+                android:paddingVertical="12dp"
+                android:textSize="18sp"
+                android:layout_marginStart="8dp"/>
+
+            <ImageButton
+                android:id="@+id/confirmButton"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:padding="6dp"
+                app:tint="@color/secondary_text_color"
+                android:background="@drawable/button_ripple_effect"
+                android:src="@drawable/ic_check"
+                android:scaleType="fitCenter"
+                android:contentDescription="OK"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/bs_divider_color"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="16dp">
+
+            <!-- Digital Time Display Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingVertical="18dp"
+                android:paddingHorizontal="16dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="@drawable/settings_option_background">
+
+                <TextView
+                    android:id="@+id/digitalTimeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1:25"
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="36sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:letterSpacing="0.05"/>
+
+                <TextView
+                    android:id="@+id/digitalTimeSubtext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="1 мин 25 сек (85 сек)"
+                    android:textColor="@color/accent_text_color"
+                    android:textSize="13sp"/>
+
+            </LinearLayout>
+
+            <!-- Quick Adjust Stepper Buttons (-10s, -5s, +5s, +10s) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="16dp">
+
+                <TextView
+                    android:id="@+id/btnMinus10"
+                    android:layout_width="0dp"
+                    android:layout_height="38dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/chip_unselected"
+                    android:gravity="center"
+                    android:text="-10с"
+                    android:textColor="@color/primary_text_color"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+                <TextView
+                    android:id="@+id/btnMinus5"
+                    android:layout_width="0dp"
+                    android:layout_height="38dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/chip_unselected"
+                    android:gravity="center"
+                    android:text="-5с"
+                    android:textColor="@color/primary_text_color"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+                <TextView
+                    android:id="@+id/btnPlus5"
+                    android:layout_width="0dp"
+                    android:layout_height="38dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/chip_unselected"
+                    android:gravity="center"
+                    android:text="+5с"
+                    android:textColor="@color/primary_text_color"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+                <TextView
+                    android:id="@+id/btnPlus10"
+                    android:layout_width="0dp"
+                    android:layout_height="38dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/chip_unselected"
+                    android:gravity="center"
+                    android:text="+10с"
+                    android:textColor="@color/primary_text_color"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+            </LinearLayout>
+
+            <!-- Slider section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginStart="16dp"
+                android:text="Точная настройка:"
+                android:textColor="@color/accent_text_color"
+                android:textSize="12sp"/>
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/timeSlider"
+                style="@style/Widget.Material3.Slider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginHorizontal="0dp"
+                android:valueFrom="10.0"
+                android:valueTo="240.0"
+                android:stepSize="5.0"
+                app:trackHeight="10dp"
+                app:thumbRadius="10dp"
+                app:thumbElevation="2dp"
+                app:thumbColor="@color/secondary_text_color"
+                app:trackColorActive="@color/secondary_text_color"
+                app:trackColorInactive="@color/bs_divider_color"
+                app:haloColor="@android:color/transparent"
+                app:labelBehavior="gone"/>
+
+            <!-- Presets section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="16dp"
+                android:text="Быстрый выбор:"
+                android:textColor="@color/accent_text_color"
+                android:textSize="12sp"/>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="0dp"
+                android:paddingHorizontal="16dp"
+                android:clipToPadding="false"
+                android:scrollbars="none"
+                android:overScrollMode="never">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/preset30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:paddingHorizontal="12dp"
+                        android:gravity="center"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/chip_unselected"
+                        android:text="30с"
+                        android:textColor="@color/primary_text_color"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/open_sans_bold"/>
+
+                    <TextView
+                        android:id="@+id/preset60"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:paddingHorizontal="12dp"
+                        android:gravity="center"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/chip_unselected"
+                        android:text="60с (1:00)"
+                        android:textColor="@color/primary_text_color"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/open_sans_bold"/>
+
+                    <TextView
+                        android:id="@+id/preset85"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:paddingHorizontal="12dp"
+                        android:gravity="center"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/chip_unselected"
+                        android:text="85с (1:25 ★)"
+                        android:textColor="@color/primary_text_color"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/open_sans_bold"/>
+
+                    <TextView
+                        android:id="@+id/preset90"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:paddingHorizontal="12dp"
+                        android:gravity="center"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/chip_unselected"
+                        android:text="90с (1:30)"
+                        android:textColor="@color/primary_text_color"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/open_sans_bold"/>
+
+                    <TextView
+                        android:id="@+id/preset110"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:paddingHorizontal="12dp"
+                        android:gravity="center"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/chip_unselected"
+                        android:text="110с (1:50)"
+                        android:textColor="@color/primary_text_color"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/open_sans_bold"/>
+
+                    <TextView
+                        android:id="@+id/preset120"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:paddingHorizontal="12dp"
+                        android:gravity="center"
+                        android:background="@drawable/chip_unselected"
+                        android:text="120с (2:00)"
+                        android:textColor="@color/primary_text_color"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/open_sans_bold"/>
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

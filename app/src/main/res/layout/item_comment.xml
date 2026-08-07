@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/commentItemRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingHorizontal="12dp"
+    android:paddingVertical="10dp">
+
+    <!-- Thread line for indented replies -->
+    <View
+        android:id="@+id/threadGuideLine"
+        android:layout_width="2.5dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="10dp"
+        android:background="@color/bs_divider_color"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <!-- Header: Avatar + User Info -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/avatarView"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_avatar_placeholder"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Small" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/usernameView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/primary_text_color"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:text="prostoa17" />
+
+                <TextView
+                    android:id="@+id/dateView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:textColor="@color/accent_text_color"
+                    android:textSize="11.5sp"
+                    tools:text="11 дней назад" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Reply-to reference (if replying) -->
+        <LinearLayout
+            android:id="@+id/llReply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_down_right_arrow"
+                app:tint="@color/accent_text_color"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="4dp" />
+
+            <TextView
+                android:id="@+id/replyToView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/accent_text_color"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                tools:text="kola_tv" />
+        </LinearLayout>
+
+        <!-- Comment Text -->
+        <TextView
+            android:id="@+id/commentHtmlView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/primary_text_color"
+            android:textSize="13.5sp"
+            android:lineSpacingExtra="3dp"
+            android:includeFontPadding="false"
+            tools:text="ну я не часто на тайтлах такого типа но мне даже нравится сюжет ни плохой, ждем продолжения" />
+
+        <LinearLayout
+            android:id="@+id/spoilerContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            android:visibility="gone" />
+
+        <!-- Bottom Action Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/replyActionView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ответить"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="13sp"
+                android:fontFamily="@font/open_sans_bold"
+                android:paddingStart="0dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground" />
+
+            <TextView
+                android:id="@+id/reportActionView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="жалоба"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="13sp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="gone"
+                android:background="?attr/selectableItemBackground" />
+
+            <ImageView
+                android:id="@+id/moreActionsView"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="4dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_more_vert"
+                app:tint="@color/accent_text_color"
+                android:contentDescription="Options"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <!-- Votes container -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/voteUpIcon"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:padding="9dp"
+                    android:src="@drawable/ic_vote_up"
+                    app:tint="@color/accent_text_color"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Vote Up" />
+
+                <TextView
+                    android:id="@+id/votesView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="2dp"
+                    android:textColor="#4ADE80"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    tools:text="17" />
+
+                <ImageView
+                    android:id="@+id/voteDownIcon"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:padding="9dp"
+                    android:src="@drawable/ic_vote_down"
+                    app:tint="@color/accent_text_color"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Vote Down" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Inline Reply Input Container -->
+        <LinearLayout
+            android:id="@+id/inlineReplyContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_comment_input"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:visibility="gone">
+
+            <!-- Header with "Ответ для @username" and cancel button -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="4dp"
+                android:paddingBottom="4dp">
+
+                <TextView
+                    android:id="@+id/tvInlineReplyToText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/secondary_color"
+                    android:textSize="12.5sp"
+                    android:fontFamily="@font/open_sans_semibold"
+                    android:ellipsize="end"
+                    android:singleLine="true" />
+
+                <ImageButton
+                    android:id="@+id/btnInlineCancelReply"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Cancel reply"
+                    android:padding="2dp"
+                    android:src="@drawable/ic_close"
+                    app:tint="@color/accent_text_color" />
+            </LinearLayout>
+
+            <!-- Formatting Bar Row (above input) -->
+            <LinearLayout
+                android:id="@+id/inlineFormattingBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="2dp"
+                android:paddingBottom="4dp">
+
+                <TextView
+                    android:id="@+id/btnInlineFormatBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="36dp"
+                    android:minHeight="36dp"
+                    android:gravity="center"
+                    android:text=" B "
+                    android:textColor="@color/accent_text_color"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Bold" />
+
+                <TextView
+                    android:id="@+id/btnInlineFormatItalic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="36dp"
+                    android:minHeight="36dp"
+                    android:gravity="center"
+                    android:text=" I "
+                    android:textColor="@color/accent_text_color"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:textStyle="italic"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Italic" />
+
+                <TextView
+                    android:id="@+id/btnInlineFormatUnderline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="36dp"
+                    android:minHeight="36dp"
+                    android:gravity="center"
+                    android:text=" U "
+                    android:textColor="@color/accent_text_color"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Underline" />
+
+                <TextView
+                    android:id="@+id/btnInlineFormatStrike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="36dp"
+                    android:minHeight="36dp"
+                    android:gravity="center"
+                    android:text=" S "
+                    android:textColor="@color/accent_text_color"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Strikethrough" />
+
+                <TextView
+                    android:id="@+id/btnInlineFormatSpoiler"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="36dp"
+                    android:minHeight="36dp"
+                    android:gravity="center"
+                    android:text=" [!] "
+                    android:textColor="@color/accent_text_color"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Spoiler" />
+
+                <TextView
+                    android:id="@+id/btnInlineFormatQuote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="36dp"
+                    android:minHeight="36dp"
+                    android:gravity="center"
+                    android:text=" ” "
+                    android:textColor="@color/accent_text_color"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Quote" />
+            </LinearLayout>
+
+            <!-- Field row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/inlineCommentInputField"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="Написать ответ..."
+                    android:textColorHint="@color/accent_text_color"
+                    android:textColor="@color/primary_text_color"
+                    android:textSize="14sp"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="6dp"
+                    android:maxLines="3"
+                    android:inputType="textMultiLine"
+                    android:imeOptions="flagNoExtractUi|flagNoFullscreen" />
+
+                <ImageButton
+                    android:id="@+id/btnInlineSendComment"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="4dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Send reply"
+                    android:padding="6dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_send"
+                    app:tint="@color/secondary_color" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

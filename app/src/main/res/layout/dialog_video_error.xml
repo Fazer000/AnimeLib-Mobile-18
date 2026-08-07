@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="340dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@drawable/settings_dialog_background">
+
+    <!-- Header with Error Title -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/errorTitleText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ошибка загрузки видео"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/closeErrorCrossButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_close"
+            app:tint="?attr/primaryTextColor"
+            android:contentDescription="Закрыть"
+            android:padding="4dp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:background="?attr/lineColor" />
+
+    <!-- Error message details -->
+    <TextView
+        android:id="@+id/errorMessageText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Не удалось воспроизвести видео с выбранного источника."
+        android:textColor="?attr/primaryTextColor"
+        android:textSize="14sp"
+        android:lineSpacingExtra="2dp" />
+
+    <!-- Current player & quality details -->
+    <TextView
+        android:id="@+id/errorPlayerDetailsText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Плеер: -"
+        android:textColor="?attr/secondaryTextColor"
+        android:textSize="13sp"
+        android:visibility="visible" />
+
+    <!-- Action buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/retryButton"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Повторить попытку"
+            android:textColor="@color/white_color"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:icon="@drawable/ic_refresh"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="@color/white_color"
+            android:backgroundTint="?attr/secondaryColor"
+            app:cornerRadius="12dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/goToDownloadsButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:text="Перейти к скачанному"
+            android:textColor="?attr/secondaryColor"
+            android:textSize="14sp"
+            android:visibility="visible"
+            app:icon="@drawable/ic_download"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="?attr/secondaryColor"
+            app:strokeColor="?attr/secondaryColor"
+            app:strokeWidth="1dp"
+            app:cornerRadius="12dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/switchPlayerButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:text="Выбрать другую озвучку"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="14sp"
+            app:icon="@drawable/ic_voice"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="?attr/primaryTextColor"
+            app:strokeColor="?attr/borderColor"
+            app:strokeWidth="1dp"
+            app:cornerRadius="12dp" />
+    </LinearLayout>
+
+</LinearLayout>

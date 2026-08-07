@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Card background with border -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/card_bg_color" />
+            <corners android:radius="10dp" />
+            <stroke
+                android:width="1dp"
+                android:color="@color/bs_divider_color" />
+        </shape>
+    </item>
+    <!-- Left purple accent stripe -->
+    <item
+        android:width="4dp"
+        android:gravity="left">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/purple_primary" />
+            <corners
+                android:topLeftRadius="10dp"
+                android:bottomLeftRadius="10dp" />
+        </shape>
+    </item>
+</layer-list>

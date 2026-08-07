@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeRefreshLayout"
+    android:background="?attr/statusBarColor"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true" >
+
+        <LinearLayout
+            android:id="@+id/mainContentLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <WebView
+                android:id="@+id/webView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:fitsSystemWindows="true" />
+
+            <FrameLayout
+                android:id="@+id/bookmarksBarContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <include layout="@layout/view_bookmarks_bar" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <include
+            android:id="@+id/webErrorLayout"
+            layout="@layout/view_web_error" />
+
+        <FrameLayout
+            android:id="@+id/spinnerBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:background="?attr/alphaPrimaryColor"
+            android:visibility="gone">
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/spinner"
+                style="@style/CustomProgressIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                app:trackCornerRadius="20dp"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fullscreenContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:visibility="gone" />
+
+        <!-- Fragment container for search and other overlays -->
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true" />
+
+    </FrameLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

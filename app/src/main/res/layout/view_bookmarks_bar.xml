@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bookmarksCardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="0dp"
+    android:layout_marginTop="0dp"
+    android:layout_marginBottom="4dp"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <LinearLayout
+        android:id="@+id/bookmarksBarContentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+        <!-- Прогресс до закрытия окна (плавным и от края до края экрана) -->
+        <ProgressBar
+            android:id="@+id/bookmarksBarProgressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginBottom="6dp"
+            android:progressDrawable="@drawable/popup_close_progress_drawable"
+            android:visibility="visible" />
+
+        <!-- Список закладок (Слайдер) -->
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/bookmarks_bar_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:orientation="horizontal" />
+
+        <!-- Индикатор точек для закладок -->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/bookmarksDotIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="14dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="2dp"
+            android:background="@android:color/transparent"
+            app:tabBackground="@drawable/dot_selector"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp"
+            app:tabMinWidth="10dp"
+            app:tabMaxWidth="10dp"
+            app:tabPaddingStart="2dp"
+            app:tabPaddingEnd="2dp"
+            app:tabPaddingTop="0dp"
+            app:tabPaddingBottom="0dp"
+            app:tabRippleColor="@null" />
+
+    </LinearLayout>
+</FrameLayout>

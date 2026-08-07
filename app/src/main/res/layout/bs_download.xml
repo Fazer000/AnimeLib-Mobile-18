@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:overScrollMode="never"
+    android:fillViewport="true"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="16dp">
+
+        <!-- Bottom sheet drag handle -->
+        <View
+            android:layout_width="36dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bottom_sheet_handle"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Top header row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="4dp">
+
+            <ImageButton
+                android:id="@+id/btnBsBack"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:background="@drawable/button_close_background"
+                android:padding="6dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="#94A3B8"
+                android:contentDescription="Back"
+                android:visibility="gone"
+                android:layout_marginEnd="8dp" />
+
+            <ImageView
+                android:id="@+id/ivHeaderIcon"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_download"
+                app:tint="@color/secondary_text_color"
+                android:layout_marginEnd="10dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Скачивание серий"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:textColor="@color/primary_text_color" />
+
+                <TextView
+                    android:id="@+id/tvSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Шаг 1 из 2: Озвучка и качество"
+                    android:textSize="12sp"
+                    android:textColor="@color/accent_text_color"
+                    android:layout_marginTop="1dp" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btnBsGoToDownloads"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:background="@drawable/button_close_background"
+                android:padding="6dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_download"
+                app:tint="@color/secondary_text_color"
+                android:contentDescription="Go to Downloads"
+                android:layout_marginEnd="6dp" />
+
+            <ImageButton
+                android:id="@+id/btnBsClose"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:background="@drawable/button_close_background"
+                android:padding="6dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_close"
+                app:tint="@color/accent_text_color"
+                android:contentDescription="Close" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/bs_divider_color"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="10dp" />
+
+        <!-- ================= STEP 1: PLAYER, QUALITY & VOICEOVERS ================= -->
+        <LinearLayout
+            android:id="@+id/layoutStep1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:visibility="visible">
+
+            <!-- 1. Player Section -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="6dp">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/ic_tv"
+                    app:tint="@color/accent_text_color"
+                    android:layout_marginEnd="6dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Плеер"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:textColor="@color/accent_text_color" />
+
+            </LinearLayout>
+
+            <!-- Player Chips Container -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="-16dp"
+                android:paddingHorizontal="16dp"
+                android:clipToPadding="false"
+                android:scrollbars="none"
+                android:overScrollMode="never"
+                android:layout_marginBottom="12dp">
+
+                <LinearLayout
+                    android:id="@+id/cgPlayers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/chipPlayerAnimelib"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="AnimeLib"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/secondary_text_color"
+                        android:background="@drawable/chip_selected"
+                        android:paddingHorizontal="18dp"
+                        android:paddingVertical="8dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginEnd="8dp" />
+
+                    <TextView
+                        android:id="@+id/chipPlayerKodik"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Kodik"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary_text_color"
+                        android:background="@drawable/chip_unselected"
+                        android:paddingHorizontal="18dp"
+                        android:paddingVertical="8dp"
+                        android:clickable="true"
+                        android:focusable="true" />
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+            <!-- 2. Quality Section -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="6dp">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/ic_quality"
+                    app:tint="@color/accent_text_color"
+                    android:layout_marginEnd="6dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Качество"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:textColor="@color/accent_text_color" />
+
+            </LinearLayout>
+
+            <!-- Quality Chips Container -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="-16dp"
+                android:paddingHorizontal="16dp"
+                android:clipToPadding="false"
+                android:scrollbars="none"
+                android:overScrollMode="never"
+                android:layout_marginBottom="14dp">
+
+                <LinearLayout
+                    android:id="@+id/cgQualities"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/chipQ2160"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2160p"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary_text_color"
+                        android:background="@drawable/chip_unselected"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="7dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:visibility="gone"
+                        android:layout_marginEnd="8dp" />
+
+                    <TextView
+                        android:id="@+id/chipQ1080"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1080p"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/secondary_text_color"
+                        android:background="@drawable/chip_selected"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="7dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginEnd="8dp" />
+
+                    <TextView
+                        android:id="@+id/chipQ720"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="720p"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary_text_color"
+                        android:background="@drawable/chip_unselected"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="7dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginEnd="8dp" />
+
+                    <TextView
+                        android:id="@+id/chipQ480"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="480p"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary_text_color"
+                        android:background="@drawable/chip_unselected"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="7dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginEnd="8dp" />
+
+                    <TextView
+                        android:id="@+id/chipQ360"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="360p"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary_text_color"
+                        android:background="@drawable/chip_unselected"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="7dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginEnd="8dp" />
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+            <!-- 3. Voiceover Section -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/ic_voice"
+                    app:tint="@color/accent_text_color"
+                    android:layout_marginEnd="6dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Озвучки / Переводы"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:textColor="@color/accent_text_color" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvVoiceovers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:clipChildren="false"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNextStep"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:text="Далее"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:fontFamily="@font/open_sans_bold"
+                app:backgroundTint="@color/secondary_text_color"
+                app:icon="@drawable/ic_arrow_forward"
+                app:iconTint="#FFFFFF"
+                app:iconGravity="textEnd"
+                app:iconPadding="8dp"
+                app:cornerRadius="12dp" />
+
+        </LinearLayout>
+
+        <!-- ================= STEP 2: EPISODES SELECTION ================= -->
+        <LinearLayout
+            android:id="@+id/layoutStep2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <!-- Control Buttons & Counter Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:id="@+id/btnSelectAll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Все"
+                    android:textSize="12sp"
+                    android:textColor="@color/primary_text_color"
+                    android:background="@drawable/chip_unselected"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginEnd="6dp" />
+
+                <TextView
+                    android:id="@+id/btnDeselectAll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Снять все"
+                    android:textSize="12sp"
+                    android:textColor="@color/primary_text_color"
+                    android:background="@drawable/chip_unselected"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginEnd="6dp" />
+
+                <TextView
+                    android:id="@+id/btnInvertSelection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Инвертировать"
+                    android:textSize="12sp"
+                    android:textColor="@color/primary_text_color"
+                    android:background="@drawable/chip_unselected"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <ProgressBar
+                    android:id="@+id/pbLoading"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginEnd="8dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvSelectedCounter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 / 0"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:textColor="@color/secondary_text_color" />
+
+            </LinearLayout>
+
+            <!-- Episodes list -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvEpisodes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/bs_divider_color"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="10dp" />
+
+            <!-- Download action button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDownload"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="16dp"
+                android:text="Скачать"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:fontFamily="@font/open_sans_bold"
+                app:backgroundTint="@color/secondary_text_color"
+                app:icon="@drawable/ic_download"
+                app:iconTint="#FFFFFF"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:cornerRadius="12dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:overScrollMode="never"
+    android:fillViewport="true"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="16dp">
+
+        <!-- Bottom sheet drag handle -->
+        <View
+            android:layout_width="36dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bottom_sheet_handle"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Top header row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="4dp">
+
+            <ImageView
+                android:id="@+id/ivProgressHeaderIcon"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="top"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/ic_download"
+                app:tint="@color/secondary_text_color"
+                android:layout_marginEnd="10dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvProgressHeaderTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Процесс скачивания"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:textColor="@color/primary_text_color" />
+
+                <TextView
+                    android:id="@+id/tvProgressHeaderSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Загрузка серий..."
+                    android:textSize="12sp"
+                    android:textColor="@color/accent_text_color"
+                    android:layout_marginTop="1dp" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btnHeaderOpenDownloadSheet"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_gravity="top"
+                android:background="@drawable/button_close_background"
+                android:padding="6dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_download"
+                app:tint="@color/secondary_text_color"
+                android:contentDescription="Выбор серий"
+                android:layout_marginEnd="6dp" />
+
+            <ImageButton
+                android:id="@+id/btnProgressClose"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_gravity="top"
+                android:background="@drawable/button_close_background"
+                android:padding="6dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_close"
+                app:tint="@color/accent_text_color"
+                android:contentDescription="Close" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/bs_divider_color"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Overall Progress Banner -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/chip_unselected"
+            android:layout_marginHorizontal="16dp"
+            android:padding="14dp"
+            android:layout_marginBottom="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvOverallText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Обработано 0 из 0 серий"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:textColor="@color/primary_text_color" />
+
+                <TextView
+                    android:id="@+id/tvOverallPercent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0%"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:textColor="@color/secondary_text_color" />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/pbOverall"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:layout_marginTop="8dp"
+                android:max="100"
+                android:progress="0"
+                android:progressDrawable="@drawable/progress_bar_background" />
+
+        </LinearLayout>
+
+        <!-- Queue Tasks Recycler -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvProgressTasks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/bs_divider_color"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Bottom Action Buttons -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOpenDownloadSheet"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="16dp"
+            android:text="Выбрать серии для скачивания"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:fontFamily="@font/open_sans_bold"
+            app:backgroundTint="@color/secondary_text_color"
+            app:icon="@drawable/ic_download"
+            app:iconTint="#FFFFFF"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:cornerRadius="12dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGoToDownloads"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Перейти в сохраненные загрузки"
+            android:textColor="@color/primary_text_color"
+            android:textSize="14sp"
+            android:fontFamily="@font/open_sans_bold"
+            app:backgroundTint="@color/chip_unselected_bg"
+            app:strokeColor="@color/bs_divider_color"
+            app:strokeWidth="1dp"
+            app:cornerRadius="12dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnStopDownload"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Остановить скачивание"
+            android:textColor="@color/stop_btn_text"
+            android:textSize="14sp"
+            android:fontFamily="@font/open_sans_bold"
+            app:backgroundTint="@color/stop_btn_bg"
+            app:icon="@drawable/ic_close"
+            app:iconTint="@color/stop_btn_text"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:strokeColor="@color/stop_btn_stroke"
+            app:strokeWidth="1dp"
+            app:cornerRadius="12dp" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

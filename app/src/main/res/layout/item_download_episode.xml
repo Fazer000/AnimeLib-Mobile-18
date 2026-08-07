@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/itemContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@drawable/episode_item_normal"
+    android:paddingStart="12dp"
+    android:paddingEnd="12dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:layout_marginBottom="6dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <CheckBox
+        android:id="@+id/cbEpisode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:focusable="false" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="8dp">
+
+        <TextView
+            android:id="@+id/tvEpisodeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1 Серия"
+            android:textSize="14sp"
+            android:fontFamily="@font/open_sans_bold"
+            android:textColor="@color/primary_text_color" />
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Доступно"
+            android:textSize="12sp"
+            android:textColor="@color/accent_text_color"
+            android:layout_marginTop="2dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

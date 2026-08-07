@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bs_bg_color"
+    android:fitsSystemWindows="true">
+
+    <!-- Top App Bar / Toolbar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/bs_bg_color"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:navigationIconTint="@color/primary_text_color"
+        app:title="Загрузки"
+        app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge"
+        app:titleTextColor="@color/primary_text_color">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingEnd="8dp">
+
+            <ImageButton
+                android:id="@+id/btnSearchDownloads"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_search"
+                app:tint="@color/primary_text_color"
+                android:contentDescription="Поиск" />
+
+            <ImageButton
+                android:id="@+id/btnSortDownloads"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_sort_arrows"
+                app:tint="@color/primary_text_color"
+                android:contentDescription="Сортировка" />
+
+        </LinearLayout>
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <!-- Search Bar (Collapsible) -->
+    <LinearLayout
+        android:id="@+id/layoutSearchContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:background="@color/bs_bg_color"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/etSearchDownloads"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_comment_input"
+            android:hint="Поиск по загруженным аниме..."
+            android:textColorHint="@color/accent_text_color"
+            android:textColor="@color/primary_text_color"
+            android:textSize="14sp"
+            android:paddingHorizontal="14dp"
+            android:singleLine="true"
+            android:imeOptions="actionSearch|flagNoExtractUi|flagNoFullscreen" />
+
+        <ImageButton
+            android:id="@+id/btnClearSearch"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_close"
+            app:tint="#94A3B8"
+            android:contentDescription="Очистить" />
+
+    </LinearLayout>
+
+    <!-- Main Content Area -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="32dp">
+
+            <!-- SECTION 1: QUEUE ("Очередь") -->
+            <LinearLayout
+                android:id="@+id/containerQueueSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tvQueueSectionHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Очередь"
+                    android:textSize="17sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:textColor="@color/primary_text_color" />
+
+                <!-- Active Queue Main Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardQueueItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/card_bg_color"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="@color/chip_unselected_stroke">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="14dp">
+
+                        <!-- Top Info Row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <!-- Poster Thumbnail -->
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/ivQueuePoster"
+                                android:layout_width="58dp"
+                                android:layout_height="82dp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/skeleton_placeholder"
+                                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"
+                                android:contentDescription="Queue Poster" />
+
+                            <!-- Details Column -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:layout_marginStart="12dp"
+                                android:layout_marginEnd="8dp">
+
+                                <TextView
+                                    android:id="@+id/tvQueueAnimeTitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Название аниме"
+                                    android:textSize="15sp"
+                                    android:fontFamily="@font/open_sans_bold"
+                                    android:textColor="@color/primary_text_color"
+                                    android:maxLines="1"
+                                    android:ellipsize="end" />
+
+                                <TextView
+                                    android:id="@+id/tvQueueStatus"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Загрузка"
+                                    android:textSize="13sp"
+                                    android:fontFamily="@font/open_sans"
+                                    android:textColor="@color/accent_text_color"
+                                    android:layout_marginTop="2dp" />
+
+                                <TextView
+                                    android:id="@+id/tvQueueProgressText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0%  0 из 26"
+                                    android:textSize="12sp"
+                                    android:fontFamily="@font/open_sans"
+                                    android:textColor="@color/accent_text_color"
+                                    android:layout_marginTop="6dp" />
+
+                                <ProgressBar
+                                    android:id="@+id/pbQueueProgress"
+                                    style="?android:attr/progressBarStyleHorizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="4dp"
+                                    android:layout_marginTop="6dp"
+                                    android:max="100"
+                                    android:progress="0"
+                                    android:progressDrawable="@drawable/progress_bar_background" />
+
+                            </LinearLayout>
+
+                            <!-- Drag Handle Icon -->
+                            <ImageView
+                                android:id="@+id/ivQueueDragHandle"
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:src="@drawable/ic_drag_menu"
+                                app:tint="#9CA3AF"
+                                android:layout_gravity="top"
+                                android:contentDescription="Drag handle" />
+
+                        </LinearLayout>
+
+                        <!-- Bottom Controls Row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="14dp">
+
+                            <!-- Left Badge: Download icon + episode fraction -->
+                            <LinearLayout
+                                android:id="@+id/btnQueueBadge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:background="@drawable/video_time_background"
+                                android:backgroundTint="#252834"
+                                android:paddingHorizontal="12dp"
+                                android:gravity="center">
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:src="@drawable/ic_download"
+                                    app:tint="#FFFFFF"
+                                    android:contentDescription="Download" />
+
+                                <TextView
+                                    android:id="@+id/tvQueueBadgeProgress"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="6dp"
+                                    android:text="0 / 26"
+                                    android:textSize="13sp"
+                                    android:fontFamily="@font/open_sans_bold"
+                                    android:textColor="#FFFFFF" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                android:layout_weight="1" />
+
+                            <!-- Pause / Resume Button -->
+                            <LinearLayout
+                                android:id="@+id/btnQueuePause"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:background="@drawable/video_time_background"
+                                android:backgroundTint="#252834"
+                                android:paddingHorizontal="14dp"
+                                android:gravity="center"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?attr/selectableItemBackground">
+
+                                <ImageView
+                                    android:id="@+id/ivQueuePauseIcon"
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:src="@drawable/ic_pause"
+                                    app:tint="#FFFFFF"
+                                    android:contentDescription="Pause" />
+
+                                <TextView
+                                    android:id="@+id/tvQueuePauseText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="6dp"
+                                    android:text="Пауза"
+                                    android:textSize="13sp"
+                                    android:fontFamily="@font/open_sans_semibold"
+                                    android:textColor="#FFFFFF" />
+
+                            </LinearLayout>
+
+                            <!-- Cancel Button -->
+                            <ImageButton
+                                android:id="@+id/btnQueueCancel"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_marginStart="10dp"
+                                android:background="@drawable/ripple_circle"
+                                android:backgroundTint="@color/stop_btn_bg"
+                                android:src="@drawable/ic_close"
+                                app:tint="@color/stop_btn_text"
+                                android:contentDescription="Отмена" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <!-- SECTION 2: DOWNLOADED ("Загруженное") -->
+            <LinearLayout
+                android:id="@+id/containerDownloadedSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvDownloadedSectionHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Загруженное"
+                    android:textSize="17sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:textColor="@color/primary_text_color" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvDownloadedAnime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="16dp"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            </LinearLayout>
+
+            <!-- Empty State Container -->
+            <LinearLayout
+                android:id="@+id/layoutEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="32dp"
+                android:layout_marginTop="40dp"
+                android:visibility="gone">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    app:cardCornerRadius="44dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/card_bg_color"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="@color/chip_unselected_stroke">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_download"
+                        app:tint="@color/secondary_text_color"
+                        android:contentDescription="No downloads" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Нет скачанных файлов"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:textColor="@color/primary_text_color"
+                    android:layout_marginTop="20dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Скачивайте любимые серии аниме, чтобы смотреть их без подключения к интернету"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/accent_text_color"
+                    android:gravity="center"
+                    android:lineSpacingExtra="4dp"
+                    android:layout_marginTop="8dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnBackToApp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="24dp"
+                    android:paddingHorizontal="24dp"
+                    android:text="Вернуться назад"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/open_sans_bold"
+                    app:cornerRadius="24dp"
+                    app:backgroundTint="@color/purple_primary" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

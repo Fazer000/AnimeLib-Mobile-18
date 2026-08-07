@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="3dp"
+    android:background="@drawable/player_item_selector"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="10dp">
+
+        <!-- Иконка / Логотип озвучки -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/teamIcon"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="center_vertical"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_avatar_placeholder"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Small"
+            android:contentDescription="Voiceover Icon" />
+
+        <!-- Название плеера -->
+        <TextView
+            android:id="@+id/firstRow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Дубляжная"
+            android:textColor="#E2E8F0"
+            android:textSize="15sp"
+            android:fontFamily="@font/open_sans_bold"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <!-- Контейнер для тегов -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical|end">
+
+            <TextView
+                android:id="@+id/subTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SUB"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:textColor="#7CAAE8"
+                android:visibility="gone"
+                android:layout_marginStart="8dp"/>
+
+            <TextView
+                android:id="@+id/fhdTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FHD"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:textColor="#7CAAE8"
+                android:visibility="visible"
+                android:layout_marginStart="8dp"/>
+
+            <TextView
+                android:id="@+id/fourKTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4K"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:textColor="#7CAAE8"
+                android:visibility="gone"
+                android:layout_marginStart="8dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    android:overScrollMode="never"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="8dp"
+        android:background="@android:color/transparent">
+
+        <View
+            android:layout_width="36dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bottom_sheet_handle"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/bs_resize_back"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:padding="6dp"
+                app:tint="@color/accent_text_color"
+                android:background="@drawable/button_close_background"
+                android:src="@drawable/ic_arrow_back"
+                android:scaleType="fitCenter"
+                android:contentDescription="Back"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Заполнение экрана"
+                android:gravity="center_vertical"
+                android:textColor="@color/primary_text_color"
+                android:textStyle="bold"
+                android:fontFamily="@font/open_sans_bold"
+                android:paddingVertical="12dp"
+                android:layout_marginStart="8dp"
+                android:textSize="18sp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/bs_divider_color"/>
+
+        <!-- Fit Option ("С полосами по бокам") -->
+        <LinearLayout
+            android:id="@+id/resizeFitOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="14dp"
+            android:background="@android:color/transparent"
+            android:foreground="?attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_fullscreen"
+                app:tint="@color/accent_text_color"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="С полосами по бокам"
+                android:textColor="@color/primary_text_color"
+                android:textSize="16sp"/>
+
+            <ImageView
+                android:id="@+id/resizeFitCheck"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_check"
+                app:tint="@color/secondary_text_color"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <!-- Zoom Option ("Ообрезать") -->
+        <LinearLayout
+            android:id="@+id/resizeZoomOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="14dp"
+            android:background="@android:color/transparent"
+            android:foreground="?attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_fullscreen_exit"
+                app:tint="@color/accent_text_color"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Обрезать"
+                android:textColor="@color/primary_text_color"
+                android:textSize="16sp"/>
+
+            <ImageView
+                android:id="@+id/resizeZoomCheck"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_check"
+                app:tint="@color/secondary_text_color"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <!-- Fill Option ("Растянуть") -->
+        <LinearLayout
+            android:id="@+id/resizeFillOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="14dp"
+            android:background="@android:color/transparent"
+            android:foreground="?attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_fullscreen"
+                app:tint="@color/accent_text_color"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Растянуть"
+                android:textColor="@color/primary_text_color"
+                android:textSize="16sp"/>
+
+            <ImageView
+                android:id="@+id/resizeFillCheck"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_check"
+                app:tint="@color/secondary_text_color"
+                android:visibility="gone" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

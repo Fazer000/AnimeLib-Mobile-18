@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_color"
+    android:fitsSystemWindows="false">
+
+    <!-- Loading Overlay -->
+    <LinearLayout
+        android:id="@+id/loadingOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_color"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/loadingProgress"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="16dp"
+            android:indeterminateTint="@color/white_color" />
+
+        <TextView
+            android:id="@+id/loadingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Загрузка видео..."
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <!-- Ambient Light Effect (behind video) -->
+    <com.example.animelib.ui.AmbientLightView
+        android:id="@+id/ambientLightView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <!-- Main Video Layout (Holds Video Container and Portrait Bottom Space) -->
+    <LinearLayout
+        android:id="@+id/mainVideoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical">
+
+        <!-- Video Player Container -->
+        <FrameLayout
+            android:id="@+id/playerContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:layout_gravity="top|start">
+
+            <androidx.media3.ui.PlayerView
+                android:id="@+id/playerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                app:animation_enabled="false"
+                app:controller_layout_id="@layout/custom_player_controller"
+                app:repeat_toggle_modes="none"
+                app:show_buffering="never"
+                app:show_next_button="false"
+                app:show_previous_button="false"
+                app:show_shuffle_button="false"
+                app:show_subtitle_button="false" />
+        </FrameLayout>
+
+        <!-- Container for Portrait Mode (below player) -->
+        <FrameLayout
+            android:id="@+id/portraitBottomContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#121212"
+            android:visibility="gone">
+
+            <include layout="@layout/layout_portrait_player_content" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+    
+    <!-- Anime Info Placeholder (показывается слева от панели озвучек когда не выбрана озвучка) -->
+    <include
+        android:id="@+id/animeInfoPlaceholder"
+        layout="@layout/anime_info_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="360dp"
+        android:visibility="gone" />
+
+    <!-- Next Episode Overlay (показывается перед автовоспроизведением следующего эпизода) -->
+    <include
+        android:id="@+id/nextEpisodeOverlay"
+        layout="@layout/next_episode_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center" />
+
+    <!-- Swipe seek preview -->
+    <TextView
+        android:id="@+id/seekPreviewText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/video_time_background"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="8dp"
+        android:text="+0 c"
+        android:textColor="@color/player_item_inactive_text"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <!-- Hold-to-speed plaque -->
+    <TextView
+        android:id="@+id/holdSpeedToast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/video_time_background"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="4dp"
+        android:text="2x"
+        android:textColor="@color/player_item_inactive_text"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <!-- Download progress plaque -->
+    <TextView
+        android:id="@+id/downloadProgressText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/video_time_background"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="6dp"
+        android:text="Скачивание 0%"
+        android:textColor="@color/player_item_inactive_text"
+        android:textSize="13sp"
+        android:visibility="gone" />
+
+    <!-- Double tap skip indicator - Left (backward) -->
+    <LinearLayout
+        android:id="@+id/skipIndicatorLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|start"
+        android:layout_marginStart="130dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:alpha="0"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_skip"
+            android:rotation="180"
+            android:alpha="0.9"
+            app:tint="@color/white_color" />
+
+        <TextView
+            android:id="@+id/skipTextLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/video_time_background"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:text="-85 сек"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Double tap skip indicator - Right (forward) -->
+    <LinearLayout
+        android:id="@+id/skipIndicatorRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:layout_marginEnd="130dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:alpha="0"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_skip"
+            android:alpha="0.9"
+            app:tint="@color/white_color" />
+
+        <TextView
+            android:id="@+id/skipTextRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/video_time_background"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:text="+85 сек"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Skip segment button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/skipSegmentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:paddingVertical="0dp"
+        android:paddingHorizontal="15dp"
+        android:textAllCaps="false"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="80dp"
+        android:layout_marginEnd="20dp"
+        android:text="Пропустить сегмент"
+        android:textColor="@color/gray_color"
+        android:textSize="14dp"
+        app:rippleColor="@color/dt_line_color"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:backgroundTint="?attr/alphaPrimaryColor"
+        app:strokeColor="?attr/alphaBorderColor"
+        app:strokeWidth="0.5dp"
+        app:cornerRadius="12dp"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/menuOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/dt_alpha_primary_color"
+        android:clickable="true"
+        android:visibility="gone" />
+
+    <!-- Sliding Menu Panel -->
+    <com.example.animelib.ui.DraggableSidePanel
+        android:id="@+id/menuPanelContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        
+        <include layout="@layout/panel_voiceover_menu" />
+        
+    </com.example.animelib.ui.DraggableSidePanel>
+
+    <!-- Comments Side Panel -->
+    <com.example.animelib.ui.DraggableSidePanel
+        android:id="@+id/commentsPanelContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        
+        <include layout="@layout/panel_comments" />
+        
+    </com.example.animelib.ui.DraggableSidePanel>
+
+    <!-- Затемняющий overlay для связанных тайтлов -->
+    <View
+        android:id="@+id/relatedTitlesDimOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <!-- Related Titles Overlay (поверх всего, открывается сверху) -->
+    <FrameLayout
+        android:id="@+id/relatedTitlesOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top"
+        android:clipToPadding="false"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="16dp"
+            android:paddingBottom="10dp">
+
+            <!-- Информация об аниме (ВЫШЕ заголовка) -->
+            <LinearLayout
+                android:id="@+id/relatedAnimeInfoContainer"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingBottom="16dp"
+                android:alpha="0">
+
+                <!-- Обложка аниме (вертикальная) -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="140dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="14dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="4dp">
+                    
+                    <ImageView
+                        android:id="@+id/relatedAnimeCover"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Anime Cover" />
+                        
+                </androidx.cardview.widget.CardView>
+
+                <!-- Информация справа от обложки -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingTop="4dp">
+
+                        <!-- Название аниме -->
+                        <TextView
+                            android:id="@+id/relatedAnimeTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#FFFFFF"
+                            android:textSize="19sp"
+                            android:textStyle="bold"
+                            android:maxLines="3"
+                            android:ellipsize="end"
+                            android:lineSpacingMultiplier="1.1" />
+
+                        <!-- Английское название -->
+                        <TextView
+                            android:id="@+id/relatedAnimeEngTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textColor="#94A3B8"
+                            android:textSize="13sp"
+                            android:maxLines="2"
+                            android:ellipsize="end"
+                            android:visibility="gone" />
+
+                        <!-- Чипы с метаинформацией -->
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/relatedAnimeChipGroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            app:chipSpacingHorizontal="6dp"
+                            app:chipSpacingVertical="4dp"
+                            app:singleLine="false">
+
+                            <!-- Тип (ТВ Сериал, Фильм и т.д.) -->
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/relatedAnimeTypeChip"
+                                style="@style/Widget.Material3.Chip.Assist"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="12sp"
+                                android:textColor="#FFFFFF"
+                                app:chipBackgroundColor="#252834"
+                                app:chipStrokeColor="#3A3F50"
+                                app:chipStrokeWidth="0.5dp"
+                                app:chipMinHeight="28dp"
+                                app:ensureMinTouchTargetSize="false" />
+
+                            <!-- Статус (Онгоинг, Вышло и т.д.) -->
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/relatedAnimeStatusChip"
+                                style="@style/Widget.Material3.Chip.Assist"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="12sp"
+                                android:textColor="#FFFFFF"
+                                app:chipBackgroundColor="#252834"
+                                app:chipStrokeColor="#3A3F50"
+                                app:chipStrokeWidth="0.5dp"
+                                app:chipMinHeight="28dp"
+                                app:ensureMinTouchTargetSize="false" />
+
+                            <!-- Год выхода -->
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/relatedAnimeYearChip"
+                                style="@style/Widget.Material3.Chip.Assist"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="12sp"
+                                android:textColor="#FFFFFF"
+                                app:chipBackgroundColor="#252834"
+                                app:chipStrokeColor="#3A3F50"
+                                app:chipStrokeWidth="0.5dp"
+                                app:chipMinHeight="28dp"
+                                app:ensureMinTouchTargetSize="false"
+                                android:visibility="gone" />
+
+                            <!-- Возрастной рейтинг -->
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/relatedAnimeAgeChip"
+                                style="@style/Widget.Material3.Chip.Assist"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="12sp"
+                                android:textColor="#FFFFFF"
+                                app:chipBackgroundColor="#252834"
+                                app:chipStrokeColor="#3A3F50"
+                                app:chipStrokeWidth="0.5dp"
+                                app:chipMinHeight="28dp"
+                                app:ensureMinTouchTargetSize="false"
+                                android:visibility="gone" />
+
+                        </com.google.android.material.chip.ChipGroup>
+
+                        <!-- Рейтинг -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:layout_marginEnd="6dp"
+                                android:src="@drawable/ic_star" />
+
+                            <TextView
+                                android:id="@+id/relatedAnimeRating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#FFFFFF"
+                                android:textSize="17sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/relatedAnimeVotes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:textColor="#94A3B8"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <!-- Количество эпизодов -->
+                        <TextView
+                            android:id="@+id/relatedAnimeEpisodes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:textColor="#94A3B8"
+                            android:textSize="14sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Заголовок "Связанные тайтлы" -->
+            <TextView
+                android:id="@+id/relatedTitlesHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="12dp"
+                android:text="Связанные тайтлы"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:alpha="0" />
+
+            <!-- RecyclerView для связанных тайтлов -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/relatedTitlesRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:clipToPadding="false"
+                android:fadeScrollbars="true"
+                android:paddingHorizontal="16dp"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</FrameLayout>

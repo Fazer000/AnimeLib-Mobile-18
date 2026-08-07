@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/exo_controller"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="bottom"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:fitsSystemWindows="false"
+    android:background="@drawable/player_controls_background">
+
+    <LinearLayout
+        android:id="@+id/topBarContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/ibClosePlayer"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_close"
+            android:background="@android:color/transparent"
+            android:foreground="@drawable/ripple_circle"/>
+
+        <!-- Anime info wrapper -->
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center">
+
+            <LinearLayout
+                android:id="@+id/animeInfoContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/animeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white_color"
+                    android:textSize="18sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_marginBottom="4dp"
+                    android:text="Маг Целитель - Новый старт"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/currentTeamName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/dt_accent_text_color"
+                        android:textSize="12sp"
+                        android:text="Dream Cast"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/dt_accent_text_color"
+                        android:textSize="12sp"
+                        android:layout_marginHorizontal="10dp"
+                        android:text="—"/>
+
+                    <TextView
+                        android:id="@+id/currentEpisodeNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/dt_accent_text_color"
+                        android:textSize="12sp"
+                        android:text="1 серия"/>
+
+                    <TextView
+                        android:id="@+id/currentEpisodeName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/dt_accent_text_color"
+                        android:textSize="12sp"
+                        android:text=""/>
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Settings Button Container with Quality Badge overlay -->
+            <FrameLayout
+                android:id="@+id/settingsButtonContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:clipChildren="false"
+                android:clipToPadding="false">
+
+                <ImageButton
+                    android:id="@+id/settingsButton"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@android:color/transparent"
+                    android:foreground="@drawable/ripple_circle"
+                    android:src="@drawable/ic_settings"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="Settings"
+                    android:padding="6dp" />
+
+                <TextView
+                    android:id="@+id/settingsQualityTag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="-1dp"
+                    android:paddingHorizontal="4dp"
+                    android:paddingVertical="1dp"
+                    android:background="@drawable/bg_quality_badge"
+                    android:text="HD"
+                    android:textColor="#FFFFFF"
+                    android:textSize="9sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:elevation="2dp"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+            <!-- Picture-in-Picture Button -->
+            <ImageButton
+                android:id="@+id/pipButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@android:color/transparent"
+                android:foreground="@drawable/ripple_circle"
+                android:src="@drawable/ic_pip"
+                android:scaleType="fitCenter"
+                android:contentDescription="Picture-in-Picture"
+                android:padding="6dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Episode Navigation and Play Controls -->
+    <LinearLayout
+        android:id="@+id/centerControlsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Previous Episode Button -->
+        <ImageButton
+            android:id="@+id/prevEpisodeButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            android:foreground="@drawable/ripple_circle"
+            android:src="@drawable/ic_player_back"
+            android:rotation="180"
+            android:scaleType="fitCenter"
+            android:contentDescription="Previous Episode"
+            android:padding="8dp"
+            android:visibility="visible"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- Play/Pause Button -->
+        <FrameLayout
+            android:layout_width="64dp"
+            android:layout_height="64dp">
+
+            <ImageButton
+                android:id="@+id/exo_play"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="4dp"
+                android:background="@android:color/transparent"
+                android:foreground="@drawable/ripple_circle"
+                android:src="@drawable/ic_player_play"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
+                android:contentDescription="Play"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <ImageButton
+                android:id="@+id/exo_pause"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:foreground="@drawable/ripple_circle"
+                android:src="@drawable/ic_player_pause"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
+                android:contentDescription="Pause"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/playLoadingIndicator"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                app:trackCornerRadius="8dp"
+                app:indicatorColor="?attr/secondaryColor"
+                app:trackThickness="4dp"/>
+        </FrameLayout>
+
+        <!-- Next Episode Button -->
+        <ImageButton
+            android:id="@+id/nextEpisodeButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:background="@android:color/transparent"
+            android:foreground="@drawable/ripple_circle"
+            android:src="@drawable/ic_player_next"
+            android:scaleType="fitCenter"
+            android:contentDescription="Next Episode"
+            android:padding="8dp"
+            android:visibility="visible"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </LinearLayout>
+
+    <!-- Progress Bar -->
+    <LinearLayout
+        android:id="@+id/playersControlBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical">
+
+        <!-- Time and Fullscreen Controls -->
+        <LinearLayout
+            android:id="@+id/timeAndControlsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:id="@+id/timeCodeContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/video_time_background"
+                android:paddingVertical="2dp"
+                android:paddingHorizontal="6dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/exo_position"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:textColor="@color/player_item_inactive_text"
+                    android:textSize="10.5sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" / "
+                    android:textColor="@color/player_item_inactive_text"
+                    android:textSize="10.5sp" />
+
+                <TextView
+                    android:id="@+id/exo_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:textColor="@color/player_item_inactive_text"
+                    android:textSize="10.5sp" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <!-- Skip Forward Button -->
+            <ImageButton
+                android:id="@+id/skipForwardButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:paddingTop="9dp"
+                android:paddingHorizontal="8dp"
+                android:paddingBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/transparent"
+                android:foreground="@drawable/ripple_circle"
+                app:tint="@color/white_color"
+                android:src="@drawable/ic_skip"
+                android:scaleType="fitCenter"
+                android:contentDescription="Skip Forward 1:25"/>
+
+            <ImageButton
+                android:id="@+id/bookmarkButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:paddingTop="5dp"
+                android:paddingHorizontal="7dp"
+                android:paddingBottom="2dp"
+                android:background="@android:color/transparent"
+                android:foreground="@drawable/ripple_circle"
+                android:src="@drawable/ic_bookmark"
+                app:tint="@color/white_color"
+                android:scaleType="fitCenter"
+                android:contentDescription="Bookmark" />
+
+            <!-- Comments Button -->
+            <ImageButton
+                android:id="@+id/commentsButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:paddingTop="7dp"
+                android:paddingHorizontal="5dp"
+                android:paddingBottom="5dp"
+                android:background="@android:color/transparent"
+                android:foreground="@drawable/ripple_circle"
+                android:src="@drawable/ic_comments_2"
+                app:tint="@color/white_color"
+                android:scaleType="fitCenter"
+                android:contentDescription="Comments" />
+
+            <!-- Episodes Menu Button -->
+            <ImageButton
+                android:id="@+id/episodesMenuButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/transparent"
+                android:foreground="@drawable/ripple_circle"
+                android:src="@drawable/ic_episodes"
+                android:scaleType="fitCenter"
+                android:contentDescription="Episodes Menu"
+                android:padding="6dp" />
+
+            <!-- Players Menu Button -->
+            <ImageButton
+                android:id="@+id/menuToggleButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@android:color/transparent"
+                android:foreground="@drawable/ripple_circle"
+                android:src="@drawable/ic_voice"
+                android:scaleType="fitCenter"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="Players Menu"
+                android:padding="6dp" />
+
+            <ImageButton
+                android:id="@+id/menuToggleFullscreen"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:paddingTop="9dp"
+                android:paddingBottom="8dp"
+                android:paddingHorizontal="8dp"
+                android:background="@android:color/transparent"
+                android:foreground="@drawable/ripple_circle"
+                app:tint="@color/white_color"
+                android:src="@drawable/ic_fullscreen"
+                android:scaleType="fitCenter"
+                android:contentDescription="Players Menu" />
+
+        </LinearLayout>
+
+        <androidx.media3.ui.DefaultTimeBar
+            android:id="@+id/exo_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="12dp"
+            app:played_color="?attr/secondaryColor"
+            app:scrubber_color="?attr/secondaryColor"
+            app:bar_height="3dp"
+            app:touch_target_height="20dp"
+            app:buffered_color="@color/lt_alpha_border_color"
+            app:unplayed_color="@color/lt_alpha_primary_color"
+            app:scrubber_drawable="@drawable/custom_scrubber"
+            app:scrubber_enabled_size="10dp"
+            app:scrubber_dragged_size="14dp"
+            app:scrubber_disabled_size="0dp" />
+
+        <!-- Episodes List (hidden by default) -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/episodesHorizontalRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginBottom="8dp"
+            android:paddingHorizontal="20dp"
+            android:clipToPadding="false"
+            android:fadeScrollbars="true" />
+
+    </LinearLayout>
+
+</FrameLayout>

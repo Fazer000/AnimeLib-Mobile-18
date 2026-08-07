@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="@color/card_bg_color"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/chip_unselected_stroke">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header part -->
+        <LinearLayout
+            android:id="@+id/layoutHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="12dp"
+            android:background="?attr/selectableItemBackground">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivPoster"
+                android:layout_width="62dp"
+                android:layout_height="88dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/skeleton_placeholder"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"
+                android:contentDescription="Anime Poster" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="14dp"
+                android:layout_marginEnd="6dp">
+
+                <TextView
+                    android:id="@+id/tvAnimeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Название Аниме"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:textColor="@color/primary_text_color"
+                    android:maxLines="2"
+                    android:ellipsize="end" />
+
+                <TextView
+                    android:id="@+id/tvAnimeCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Аниме"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/accent_text_color"
+                    android:layout_marginTop="3dp" />
+
+                <!-- Green Downloaded Badge Row -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="8dp">
+
+                    <ImageView
+                        android:id="@+id/ivStatusIcon"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_download_circle" />
+
+                    <TextView
+                        android:id="@+id/tvEpisodeBadge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:text="0 серий"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/open_sans_semibold"
+                        android:textColor="#10B981" />
+
+                    <TextView
+                        android:id="@+id/tvSizeBadge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="0 MB"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/open_sans"
+                        android:textColor="#6B7280" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- More options (3 horizontal dots) -->
+            <ImageView
+                android:id="@+id/btnAnimeOptions"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:padding="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_more_horiz"
+                app:tint="#9CA3AF"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="Опции" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
