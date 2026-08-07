@@ -572,7 +572,7 @@ public class ApiService {
                     requestBody.addProperty("comment_level", 0);
                 }
 
-                String jsonString = gson.toJson(requestBody);
+                String jsonString = requestBody.toString();
                 Log.d("ApiService", "Posting comment payload: " + jsonString);
 
                 okhttp3.RequestBody body = okhttp3.RequestBody.create(jsonString, okhttp3.MediaType.get("application/json; charset=utf-8"));

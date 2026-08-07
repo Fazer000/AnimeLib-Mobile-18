@@ -94,22 +94,35 @@ public class UpdateManager {
 
                     if (json.has("assets") && json.get("assets").isJsonArray()) {
                         JsonArray assets = json.getAsJsonArray("assets");
+                        JsonObject bestAsset = null;
+                        int bestPriority = 0; // 0: none, 1: any .apk, 2: release .apk, 3: app-release.apk
+
                         for (JsonElement assetElem : assets) {
                             if (assetElem.isJsonObject()) {
                                 JsonObject asset = assetElem.getAsJsonObject();
                                 String name = asset.has("name") && !asset.get("name").isJsonNull() ? asset.get("name").getAsString() : "";
                                 String downloadUrl = asset.has("browser_download_url") && !asset.get("browser_download_url").isJsonNull() ? asset.get("browser_download_url").getAsString() : "";
-                                long size = asset.has("size") && !asset.get("size").isJsonNull() ? asset.get("size").getAsLong() : 0;
 
-                                if (name.toLowerCase().endsWith(".apk") || downloadUrl.toLowerCase().endsWith(".apk")) {
-                                    apkUrl = downloadUrl;
-                                    apkSize = size;
+                                if (downloadUrl.isEmpty()) continue;
+
+                                String lowerName = name.toLowerCase();
+                                if (lowerName.equals("app-release.apk") || downloadUrl.toLowerCase().endsWith("/app-release.apk")) {
+                                    bestAsset = asset;
+                                    bestPriority = 3;
                                     break;
-                                } else if (apkUrl.equals(htmlUrl) && !downloadUrl.isEmpty()) {
-                                    apkUrl = downloadUrl;
-                                    apkSize = size;
+                                } else if (lowerName.contains("release") && lowerName.endsWith(".apk") && bestPriority < 2) {
+                                    bestAsset = asset;
+                                    bestPriority = 2;
+                                } else if (lowerName.endsWith(".apk") && bestPriority < 1) {
+                                    bestAsset = asset;
+                                    bestPriority = 1;
                                 }
                             }
+                        }
+
+                        if (bestAsset != null) {
+                            apkUrl = bestAsset.has("browser_download_url") && !bestAsset.get("browser_download_url").isJsonNull() ? bestAsset.get("browser_download_url").getAsString() : htmlUrl;
+                            apkSize = bestAsset.has("size") && !bestAsset.get("size").isJsonNull() ? bestAsset.get("size").getAsLong() : 0;
                         }
                     }
 
