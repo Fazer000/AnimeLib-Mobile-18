@@ -76,8 +76,8 @@ jobs:
       if: github.ref == 'refs/heads/main'
       uses: softprops/action-gh-release@v2
       with:
-        tag_name: v1.7.1
-        name: Release v1.7.1
+        tag_name: v1.7.2
+        name: Release v1.7.2
         draft: false
         prerelease: false
         files: |
