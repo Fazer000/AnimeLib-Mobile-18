@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,7 +44,35 @@ public class CommentDocBuilder {
         for (String line : lines) {
             String trimmedLine = line.trim();
 
-            if (trimmedLine.startsWith("[quote]") && trimmedLine.endsWith("[/quote]")) {
+            if (trimmedLine.startsWith("[spoilerblock") && trimmedLine.endsWith("[/spoilerblock]")) {
+                String visibleText = "спойлер";
+                String innerContent = "";
+                int firstClose = trimmedLine.indexOf(']');
+                if (firstClose > 0) {
+                    String tagHeader = trimmedLine.substring(1, firstClose);
+                    if (tagHeader.startsWith("spoilerblock=")) {
+                        visibleText = tagHeader.substring(13).trim();
+                        if (visibleText.isEmpty()) visibleText = "спойлер";
+                    }
+                    innerContent = trimmedLine.substring(firstClose + 1, trimmedLine.length() - 15);
+                }
+
+                JsonObject spoilerBlock = new JsonObject();
+                spoilerBlock.addProperty("type", "spoilerBlock");
+
+                JsonObject attrs = new JsonObject();
+                attrs.addProperty("visibleText", visibleText);
+                spoilerBlock.add("attrs", attrs);
+
+                JsonArray sbContent = new JsonArray();
+                JsonObject paragraph = new JsonObject();
+                paragraph.addProperty("type", "paragraph");
+                paragraph.add("content", parseLineContent(innerContent));
+                sbContent.add(paragraph);
+
+                spoilerBlock.add("content", sbContent);
+                contentArray.add(spoilerBlock);
+            } else if (trimmedLine.startsWith("[quote]") && trimmedLine.endsWith("[/quote]")) {
                 String quoteText = trimmedLine.substring(7, trimmedLine.length() - 8);
                 JsonObject blockquote = new JsonObject();
                 blockquote.addProperty("type", "blockquote");
@@ -117,8 +144,7 @@ public class CommentDocBuilder {
             spoilerNode.addProperty("type", "spoilerInline");
 
             JsonObject attrs = new JsonObject();
-            attrs.addProperty("visibleText", visibleText);
-            attrs.addProperty("spoilerId", generateSpoilerId());
+            attrs.addProperty("visibleText", (visibleText != null && !visibleText.trim().isEmpty()) ? visibleText : "спойлер");
             spoilerNode.add("attrs", attrs);
 
             JsonArray spoilerContent = new JsonArray();
@@ -215,11 +241,5 @@ public class CommentDocBuilder {
         }
 
         return textNode;
-    }
-
-    private static String generateSpoilerId() {
-        long timestamp = System.currentTimeMillis();
-        String randomHex = Long.toHexString(new Random().nextLong() & 0xFFFFFFL);
-        return "spoiler-" + timestamp + "-" + randomHex;
     }
 }

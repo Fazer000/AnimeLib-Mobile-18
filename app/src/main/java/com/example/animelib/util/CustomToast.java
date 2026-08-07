@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.animelib.R;
+import com.example.animelib.models.UpdateInfo;
+import android.util.Log;
 
 public class CustomToast {
 
@@ -48,6 +50,185 @@ public class CustomToast {
 
     public static void showInfo(Context context, String message) {
         show(context, message, TYPE_INFO);
+    }
+
+    public static void showUpdateAlert(Context context, UpdateInfo updateInfo) {
+        if (context == null || updateInfo == null) return;
+
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            mainHandler.post(() -> showUpdateAlert(context, updateInfo));
+            return;
+        }
+
+        Activity activity = getActivity(context);
+        if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
+            return;
+        }
+
+        if (lastToastViewRef != null) {
+            View oldToast = lastToastViewRef.get();
+            if (oldToast != null) {
+                try {
+                    android.view.ViewParent parent = oldToast.getParent();
+                    if (parent instanceof ViewGroup) {
+                        ((ViewGroup) parent).removeView(oldToast);
+                    }
+                } catch (Exception ignored) {}
+            }
+            lastToastViewRef = null;
+        }
+
+        if (currentDismissRunnable != null) {
+            mainHandler.removeCallbacks(currentDismissRunnable);
+            currentDismissRunnable = null;
+        }
+
+        ViewGroup rootView = getTopMostRootView(activity);
+        if (rootView == null) return;
+
+        View oldViewInRoot = rootView.findViewWithTag(TAG_CUSTOM_TOAST);
+        if (oldViewInRoot != null) {
+            try {
+                rootView.removeView(oldViewInRoot);
+            } catch (Exception ignored) {}
+        }
+
+        LayoutInflater inflater = LayoutInflater.from(activity);
+        View toastView = inflater.inflate(R.layout.layout_custom_toast, rootView, false);
+        toastView.setTag(TAG_CUSTOM_TOAST);
+
+        int screenWidth = activity.getResources().getDisplayMetrics().widthPixels;
+        int maxToastWidth = Math.min((int) (screenWidth * 0.90f), Math.round(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 360f, activity.getResources().getDisplayMetrics())));
+        int reservedPadding = Math.round(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 60f, activity.getResources().getDisplayMetrics()));
+
+        ImageView iconView = toastView.findViewById(R.id.customToastIcon);
+        TextView textView = toastView.findViewById(R.id.customToastText);
+
+        String tagName = updateInfo.getTagName() != null ? updateInfo.getTagName() : "";
+        String message = "Доступно обновление " + tagName + "! Нажмите, чтобы обновиться";
+        textView.setText(message);
+        textView.setMaxWidth(Math.max(maxToastWidth - reservedPadding, 140));
+
+        ViewGroup.LayoutParams lp;
+        int marginBottom = Math.round(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 80f, activity.getResources().getDisplayMetrics()));
+        int marginHorizontal = Math.round(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 16f, activity.getResources().getDisplayMetrics()));
+
+        if (rootView instanceof android.widget.FrameLayout) {
+            android.widget.FrameLayout.LayoutParams flp = new android.widget.FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+            flp.gravity = android.view.Gravity.BOTTOM | android.view.Gravity.CENTER_HORIZONTAL;
+            flp.bottomMargin = marginBottom;
+            flp.leftMargin = marginHorizontal;
+            flp.rightMargin = marginHorizontal;
+            lp = flp;
+        } else if (rootView instanceof android.widget.RelativeLayout) {
+            android.widget.RelativeLayout.LayoutParams rlp = new android.widget.RelativeLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+            rlp.addRule(android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM);
+            rlp.addRule(android.widget.RelativeLayout.CENTER_HORIZONTAL);
+            rlp.bottomMargin = marginBottom;
+            rlp.leftMargin = marginHorizontal;
+            rlp.rightMargin = marginHorizontal;
+            lp = rlp;
+        } else if (rootView instanceof androidx.coordinatorlayout.widget.CoordinatorLayout) {
+            androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams clp = new androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+            clp.gravity = android.view.Gravity.BOTTOM | android.view.Gravity.CENTER_HORIZONTAL;
+            clp.bottomMargin = marginBottom;
+            clp.leftMargin = marginHorizontal;
+            clp.rightMargin = marginHorizontal;
+            lp = clp;
+        } else if (rootView instanceof android.widget.LinearLayout) {
+            android.widget.LinearLayout.LayoutParams llp = new android.widget.LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+            llp.gravity = android.view.Gravity.BOTTOM | android.view.Gravity.CENTER_HORIZONTAL;
+            llp.bottomMargin = marginBottom;
+            llp.leftMargin = marginHorizontal;
+            llp.rightMargin = marginHorizontal;
+            lp = llp;
+        } else {
+            ViewGroup.MarginLayoutParams mlp = new ViewGroup.MarginLayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+            mlp.bottomMargin = marginBottom;
+            mlp.leftMargin = marginHorizontal;
+            mlp.rightMargin = marginHorizontal;
+            lp = mlp;
+        }
+
+        toastView.setLayoutParams(lp);
+
+        toastView.setElevation(2000f);
+        toastView.setTranslationZ(2000f);
+        androidx.core.view.ViewCompat.setElevation(toastView, 2000f);
+        androidx.core.view.ViewCompat.setTranslationZ(toastView, 2000f);
+
+        iconView.setImageResource(R.drawable.ic_download);
+
+        boolean isDark = isDarkTheme(activity);
+        android.graphics.drawable.GradientDrawable pillBg = new android.graphics.drawable.GradientDrawable();
+        pillBg.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
+        float cornerRadius = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 20f, activity.getResources().getDisplayMetrics());
+        pillBg.setCornerRadius(cornerRadius);
+
+        int strokeWidth = Math.round(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 1.5f, activity.getResources().getDisplayMetrics()));
+
+        if (isDark) {
+            pillBg.setColor(android.graphics.Color.parseColor("#1E293B"));
+            pillBg.setStroke(strokeWidth, android.graphics.Color.parseColor("#38BDF8"));
+            textView.setTextColor(android.graphics.Color.parseColor("#F8FAFC"));
+        } else {
+            pillBg.setColor(android.graphics.Color.parseColor("#F0F9FF"));
+            pillBg.setStroke(strokeWidth, android.graphics.Color.parseColor("#0284C7"));
+            textView.setTextColor(android.graphics.Color.parseColor("#0C4A6E"));
+        }
+        toastView.setBackground(pillBg);
+
+        float initialTranslationY = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 48f, activity.getResources().getDisplayMetrics());
+        toastView.setAlpha(0f);
+        toastView.setScaleX(0.88f);
+        toastView.setScaleY(0.88f);
+        toastView.setTranslationY(initialTranslationY);
+
+        toastView.animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f)
+                .translationY(0f)
+                .setDuration(300)
+                .setInterpolator(new DecelerateInterpolator(1.8f))
+                .start();
+
+        toastView.setOnClickListener(v -> {
+            dismissToast(rootView, toastView);
+            com.example.animelib.UpdateActivity.start(activity, updateInfo);
+        });
+
+        currentDismissRunnable = () -> dismissToast(rootView, toastView);
+        mainHandler.postDelayed(currentDismissRunnable, 10000);
+
+        try {
+            rootView.addView(toastView);
+            lastToastViewRef = new java.lang.ref.WeakReference<>(toastView);
+        } catch (Exception e) {
+            Log.e("CustomToast", "Failed to add update alert to rootView", e);
+        }
     }
 
     public static void show(Context context, String message, int type) {

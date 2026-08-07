@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.animelib.util.CustomToast;
+import com.example.animelib.util.UpdateManager;
+import com.example.animelib.models.UpdateInfo;
 
 import com.example.animelib.data.DatabaseManager;
 import com.example.animelib.data.entity.TokenEntity;
@@ -177,6 +179,28 @@ public class MainActivity extends AppCompatActivity {
         setupBackPressHandler();
 
         checkAndLoadUrl();
+
+        checkForUpdatesOnStartup();
+    }
+
+    private void checkForUpdatesOnStartup() {
+        UpdateManager.checkForUpdates(this, httpClient, new UpdateManager.CheckUpdateCallback() {
+            @Override
+            public void onUpdateCheckResult(boolean hasUpdate, UpdateInfo updateInfo, String currentVersion) {
+                if (hasUpdate && updateInfo != null) {
+                    runOnUiThread(() -> {
+                        if (!isFinishing() && !isDestroyed()) {
+                            CustomToast.showUpdateAlert(MainActivity.this, updateInfo);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.d("MainActivity", "Startup update check error: " + errorMessage);
+            }
+        });
     }
 
     private void loadAndApplyTheme() {
