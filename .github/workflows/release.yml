@@ -120,12 +120,18 @@ jobs:
             f.write(f"tag_name={new_tag}\n")
         '
 
+    - name: Check PAT Secret for Updater Repo
+      if: github.ref == 'refs/heads/main' && secrets.GH_PAT == ''
+      run: |
+        echo "::warning::Секрет GH_PAT не настроен! Автоматический деплой в сторонний репозиторий (AnimeLib-Mobile-Updater) требует Personal Access Token."
+        echo "Для исправления добавьте GH_PAT в Settings -> Secrets and variables -> Actions вашего репозитория AnimeLib-Mobile."
+
     - name: Create GitHub Release in AnimeLib-Mobile-Updater Repo
-      if: github.ref == 'refs/heads/main'
+      if: github.ref == 'refs/heads/main' && secrets.GH_PAT != ''
       uses: softprops/action-gh-release@v2
       with:
         repository: Fazer000/AnimeLib-Mobile-Updater
-        token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.GH_PAT }}
         tag_name: ${{ steps.bump_updater_version.outputs.tag_name }}
         name: Release ${{ steps.bump_updater_version.outputs.tag_name }}
         draft: false

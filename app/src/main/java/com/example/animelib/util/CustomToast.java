@@ -176,7 +176,7 @@ public class CustomToast {
         androidx.core.view.ViewCompat.setElevation(toastView, 2000f);
         androidx.core.view.ViewCompat.setTranslationZ(toastView, 2000f);
 
-        iconView.setImageResource(R.drawable.ic_download);
+        iconView.setImageResource(R.drawable.ic_toast_update);
 
         boolean isDark = isDarkTheme(activity);
         android.graphics.drawable.GradientDrawable pillBg = new android.graphics.drawable.GradientDrawable();
@@ -186,16 +186,18 @@ public class CustomToast {
         pillBg.setCornerRadius(cornerRadius);
 
         int strokeWidth = Math.round(TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 1.5f, activity.getResources().getDisplayMetrics()));
+                TypedValue.COMPLEX_UNIT_DIP, 1f, activity.getResources().getDisplayMetrics()));
 
         if (isDark) {
-            pillBg.setColor(android.graphics.Color.parseColor("#1E293B"));
-            pillBg.setStroke(strokeWidth, android.graphics.Color.parseColor("#38BDF8"));
-            textView.setTextColor(android.graphics.Color.parseColor("#F8FAFC"));
+            // Темная тема: темный плавающий пилл с изящной контрастной рамкой
+            pillBg.setColor(android.graphics.Color.parseColor("#25242D"));
+            pillBg.setStroke(strokeWidth, android.graphics.Color.parseColor("#3D3C48"));
+            textView.setTextColor(android.graphics.Color.parseColor("#F3F3F7"));
         } else {
-            pillBg.setColor(android.graphics.Color.parseColor("#F0F9FF"));
-            pillBg.setStroke(strokeWidth, android.graphics.Color.parseColor("#0284C7"));
-            textView.setTextColor(android.graphics.Color.parseColor("#0C4A6E"));
+            // Светлая тема: чистый белый пилл с мягкой рамкой и темным текстом
+            pillBg.setColor(android.graphics.Color.parseColor("#FFFFFF"));
+            pillBg.setStroke(strokeWidth, android.graphics.Color.parseColor("#E2E8F0"));
+            textView.setTextColor(android.graphics.Color.parseColor("#0F172A"));
         }
         toastView.setBackground(pillBg);
 

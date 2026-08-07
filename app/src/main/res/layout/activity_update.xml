@@ -72,8 +72,7 @@
                     android:id="@+id/ivUpdateLogo"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:src="@drawable/ic_download_circle"
-                    app:tint="@color/purple_primary"
+                    android:src="@mipmap/ic_launcher_round"
                     android:layout_marginBottom="12dp" />
 
                 <TextView
