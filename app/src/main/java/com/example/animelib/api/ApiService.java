@@ -550,6 +550,10 @@ public class ApiService {
                         requestBody.addProperty("root_id", parentCommentId);
                     }
                     requestBody.addProperty("comment_level", commentLevel > 0 ? commentLevel : 1);
+                } else {
+                    requestBody.add("parent_comment", com.google.gson.JsonNull.INSTANCE);
+                    requestBody.add("root_id", com.google.gson.JsonNull.INSTANCE);
+                    requestBody.addProperty("comment_level", 0);
                 }
 
                 String jsonString = gson.toJson(requestBody);
@@ -557,7 +561,10 @@ public class ApiService {
 
                 okhttp3.RequestBody body = okhttp3.RequestBody.create(jsonString, okhttp3.MediaType.get("application/json; charset=utf-8"));
                 
-                Request request = buildApiRequest(apiUrl)
+                Request request = new Request.Builder()
+                        .url(apiUrl)
+                        .addHeader("Authorization", "Bearer " + getBearerToken())
+                        .addHeader("Referer", "https://animelib.org/")
                         .post(body)
                         .build();
 
