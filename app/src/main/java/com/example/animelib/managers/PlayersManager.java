@@ -2,11 +2,14 @@ package com.example.animelib.managers;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.OptIn;
 import androidx.media3.common.util.UnstableApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -103,6 +106,115 @@ public class PlayersManager {
         setupPlayersViews();
     }
     
+    private long lastSwipeTime = 0;
+
+    private void switchToNextSidePanelTab() {
+        long now = System.currentTimeMillis();
+        if (now - lastSwipeTime < 300) return;
+        lastSwipeTime = now;
+
+        if (tabLayout == null) return;
+        int currentPos = tabLayout.getSelectedTabPosition();
+        if (currentPos < tabLayout.getTabCount() - 1) {
+            TabLayout.Tab nextTab = tabLayout.getTabAt(currentPos + 1);
+            if (nextTab != null) {
+                nextTab.select();
+            }
+        }
+    }
+
+    private void switchToPreviousSidePanelTab() {
+        long now = System.currentTimeMillis();
+        if (now - lastSwipeTime < 300) return;
+        lastSwipeTime = now;
+
+        if (tabLayout == null) return;
+        int currentPos = tabLayout.getSelectedTabPosition();
+        if (currentPos > 0) {
+            TabLayout.Tab prevTab = tabLayout.getTabAt(currentPos - 1);
+            if (prevTab != null) {
+                prevTab.select();
+            }
+        }
+    }
+
+    private void setupSwipeGestures(RecyclerView recyclerView) {
+        if (recyclerView == null || context == null) return;
+
+        final GestureDetector gestureDetector = new GestureDetector(
+                context,
+                new GestureDetector.SimpleOnGestureListener() {
+                    private static final int SWIPE_THRESHOLD = 80;
+                    private static final int SWIPE_VELOCITY_THRESHOLD = 80;
+
+                    @Override
+                    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                        if (e1 == null || e2 == null) return false;
+                        float diffX = e2.getX() - e1.getX();
+                        float diffY = e2.getY() - e1.getY();
+                        if (Math.abs(diffX) > Math.abs(diffY)
+                                && Math.abs(diffX) > SWIPE_THRESHOLD
+                                && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                            if (diffX < 0) {
+                                switchToNextSidePanelTab();
+                            } else {
+                                switchToPreviousSidePanelTab();
+                            }
+                            return true;
+                        }
+                        return false;
+                    }
+                }
+        );
+
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            private float startX = 0f;
+            private float startY = 0f;
+            private boolean isHorizontalSwipe = false;
+
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                gestureDetector.onTouchEvent(e);
+                switch (e.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        startX = e.getX();
+                        startY = e.getY();
+                        isHorizontalSwipe = false;
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        float dx = e.getX() - startX;
+                        float dy = e.getY() - startY;
+                        if (!isHorizontalSwipe && Math.abs(dx) > 30f && Math.abs(dx) > Math.abs(dy)) {
+                            isHorizontalSwipe = true;
+                            if (rv.getParent() != null) {
+                                rv.getParent().requestDisallowInterceptTouchEvent(true);
+                            }
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        if (isHorizontalSwipe) {
+                            float diffX = e.getX() - startX;
+                            if (Math.abs(diffX) > 80f) {
+                                if (diffX < 0) {
+                                    switchToNextSidePanelTab();
+                                } else {
+                                    switchToPreviousSidePanelTab();
+                                }
+                            }
+                        }
+                        break;
+                }
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {}
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {}
+        });
+    }
+
     /**
      * Настройка UI компонентов плееров
      */
@@ -128,6 +240,7 @@ public class PlayersManager {
                         this::onPlayerSelected
                 );
                 rvVoiceovers.setAdapter(sidePanelAdapter);
+                setupSwipeGestures(rvVoiceovers);
             }
 
             if (tabLayout != null) {

@@ -68,7 +68,6 @@ public class PlayerTabsAdapter extends RecyclerView.Adapter<PlayerTabsAdapter.Pl
         // Вкладки плееров
         activeTabs.add("animelib");
         activeTabs.add("kodik");
-        activeTabs.add("test");
     }
     
     /**
@@ -125,9 +124,6 @@ public class PlayerTabsAdapter extends RecyclerView.Adapter<PlayerTabsAdapter.Pl
         } else if ("kodik".equals(playerType)) {
             Log.d(TAG, "Setting up Kodik tab with " + (kodikPlayers != null ? kodikPlayers.size() : "null") + " players");
             setupPlayerTab(holder, kodikPlayers, "kodik");
-        } else if ("test".equals(playerType)) {
-            Log.d(TAG, "Setting up Test tab");
-            setupPlayerTab(holder, animelibPlayers != null && !animelibPlayers.isEmpty() ? animelibPlayers : kodikPlayers, "test");
         }
     }
 

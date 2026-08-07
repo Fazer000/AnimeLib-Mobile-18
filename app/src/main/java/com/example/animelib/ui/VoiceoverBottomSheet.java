@@ -2,7 +2,9 @@ package com.example.animelib.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -36,7 +38,6 @@ public class VoiceoverBottomSheet extends BottomSheetDialog {
 
     private List<EpisodeResponse.PlayerData> animelibPlayers;
     private List<EpisodeResponse.PlayerData> kodikPlayers;
-    private List<EpisodeResponse.PlayerData> testPlayers = new ArrayList<>();
     private EpisodeResponse.PlayerData currentPlayerData;
     private boolean isLoading = false;
 
@@ -51,6 +52,7 @@ public class VoiceoverBottomSheet extends BottomSheetDialog {
     private String activeTab = "animelib";
     private int savedHeight = 0;
     private boolean isProgrammaticTabSelect = false;
+    private long lastSwipeTime = 0;
 
     public VoiceoverBottomSheet(@NonNull Context context,
                                 List<EpisodeResponse.PlayerData> animelibPlayers,
@@ -66,33 +68,6 @@ public class VoiceoverBottomSheet extends BottomSheetDialog {
         this.isLoading = isLoading;
         this.selectionListener = selectionListener;
         this.downloadListener = downloadListener;
-        initTestPlayers();
-    }
-
-    private void initTestPlayers() {
-        testPlayers = new ArrayList<>();
-
-        EpisodeResponse.PlayerData testItem1 = new EpisodeResponse.PlayerData();
-        testItem1.setPlayer("test");
-        EpisodeResponse.Team team1 = new EpisodeResponse.Team();
-        team1.setName("Тестовая озвучка #1");
-        testItem1.setTeam(team1);
-
-        EpisodeResponse.PlayerData testItem2 = new EpisodeResponse.PlayerData();
-        testItem2.setPlayer("test");
-        EpisodeResponse.Team team2 = new EpisodeResponse.Team();
-        team2.setName("Тестовый дубляж Studio");
-        testItem2.setTeam(team2);
-
-        EpisodeResponse.PlayerData testItem3 = new EpisodeResponse.PlayerData();
-        testItem3.setPlayer("test");
-        EpisodeResponse.Team team3 = new EpisodeResponse.Team();
-        team3.setName("Тестовый плеер (Demo 1080p)");
-        testItem3.setTeam(team3);
-
-        testPlayers.add(testItem1);
-        testPlayers.add(testItem2);
-        testPlayers.add(testItem3);
     }
 
     @Override
@@ -236,6 +211,114 @@ public class VoiceoverBottomSheet extends BottomSheetDialog {
                 }
         );
         rvVoiceovers.setAdapter(adapter);
+        setupSwipeGestures(rvVoiceovers);
+    }
+
+    private void switchToNextTab() {
+        long now = System.currentTimeMillis();
+        if (now - lastSwipeTime < 300) return;
+        lastSwipeTime = now;
+
+        if (tabLayout == null) return;
+        int currentPos = tabLayout.getSelectedTabPosition();
+        if (currentPos < tabLayout.getTabCount() - 1) {
+            TabLayout.Tab nextTab = tabLayout.getTabAt(currentPos + 1);
+            if (nextTab != null) {
+                nextTab.select();
+            }
+        }
+    }
+
+    private void switchToPreviousTab() {
+        long now = System.currentTimeMillis();
+        if (now - lastSwipeTime < 300) return;
+        lastSwipeTime = now;
+
+        if (tabLayout == null) return;
+        int currentPos = tabLayout.getSelectedTabPosition();
+        if (currentPos > 0) {
+            TabLayout.Tab prevTab = tabLayout.getTabAt(currentPos - 1);
+            if (prevTab != null) {
+                prevTab.select();
+            }
+        }
+    }
+
+    private void setupSwipeGestures(RecyclerView recyclerView) {
+        if (recyclerView == null || getContext() == null) return;
+
+        final GestureDetector gestureDetector = new GestureDetector(
+                getContext(),
+                new GestureDetector.SimpleOnGestureListener() {
+                    private static final int SWIPE_THRESHOLD = 80;
+                    private static final int SWIPE_VELOCITY_THRESHOLD = 80;
+
+                    @Override
+                    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                        if (e1 == null || e2 == null) return false;
+                        float diffX = e2.getX() - e1.getX();
+                        float diffY = e2.getY() - e1.getY();
+                        if (Math.abs(diffX) > Math.abs(diffY)
+                                && Math.abs(diffX) > SWIPE_THRESHOLD
+                                && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                            if (diffX < 0) {
+                                switchToNextTab();
+                            } else {
+                                switchToPreviousTab();
+                            }
+                            return true;
+                        }
+                        return false;
+                    }
+                }
+        );
+
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            private float startX = 0f;
+            private float startY = 0f;
+            private boolean isHorizontalSwipe = false;
+
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                gestureDetector.onTouchEvent(e);
+                switch (e.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        startX = e.getX();
+                        startY = e.getY();
+                        isHorizontalSwipe = false;
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        float dx = e.getX() - startX;
+                        float dy = e.getY() - startY;
+                        if (!isHorizontalSwipe && Math.abs(dx) > 30f && Math.abs(dx) > Math.abs(dy)) {
+                            isHorizontalSwipe = true;
+                            if (rv.getParent() != null) {
+                                rv.getParent().requestDisallowInterceptTouchEvent(true);
+                            }
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        if (isHorizontalSwipe) {
+                            float diffX = e.getX() - startX;
+                            if (Math.abs(diffX) > 80f) {
+                                if (diffX < 0) {
+                                    switchToNextTab();
+                                } else {
+                                    switchToPreviousTab();
+                                }
+                            }
+                        }
+                        break;
+                }
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {}
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {}
+        });
     }
 
     private void determineActiveTab() {
@@ -269,11 +352,8 @@ public class VoiceoverBottomSheet extends BottomSheetDialog {
             tabLayout.removeAllTabs();
             tabLayout.addTab(tabLayout.newTab().setText("AnimeLib"));
             tabLayout.addTab(tabLayout.newTab().setText("Kodik"));
-            tabLayout.addTab(tabLayout.newTab().setText("Тест"));
 
-            int selectedIndex = 0;
-            if ("kodik".equals(activeTab)) selectedIndex = 1;
-            else if ("test".equals(activeTab)) selectedIndex = 2;
+            int selectedIndex = "kodik".equals(activeTab) ? 1 : 0;
 
             isProgrammaticTabSelect = true;
             TabLayout.Tab initialTab = tabLayout.getTabAt(selectedIndex);
@@ -287,7 +367,7 @@ public class VoiceoverBottomSheet extends BottomSheetDialog {
                 public void onTabSelected(TabLayout.Tab tab) {
                     if (tab == null) return;
                     int pos = tab.getPosition();
-                    String targetTab = pos == 0 ? "animelib" : (pos == 1 ? "kodik" : "test");
+                    String targetTab = pos == 0 ? "animelib" : "kodik";
 
                     boolean hasAnimelib = animelibPlayers != null && !animelibPlayers.isEmpty();
                     boolean hasKodik = kodikPlayers != null && !kodikPlayers.isEmpty();
@@ -341,7 +421,7 @@ public class VoiceoverBottomSheet extends BottomSheetDialog {
         String prevTab = activeTab;
         activeTab = targetTab;
 
-        boolean isMovingRight = "kodik".equals(targetTab) || ("test".equals(targetTab) && !"kodik".equals(prevTab));
+        boolean isMovingRight = "kodik".equals(targetTab);
         float offset = isMovingRight ? 60f : -60f;
 
         if (rvVoiceovers != null) {
@@ -373,7 +453,6 @@ public class VoiceoverBottomSheet extends BottomSheetDialog {
         if (tabLayout != null) {
             boolean hasAnimelib = animelibPlayers != null && !animelibPlayers.isEmpty();
             boolean hasKodik = kodikPlayers != null && !kodikPlayers.isEmpty();
-            boolean hasTest = testPlayers != null && !testPlayers.isEmpty();
 
             TabLayout.Tab tabAnimelib = tabLayout.getTabAt(0);
             if (tabAnimelib != null && tabAnimelib.view != null) {
@@ -387,15 +466,7 @@ public class VoiceoverBottomSheet extends BottomSheetDialog {
                 tabKodik.view.setAlpha(hasKodik ? 1.0f : 0.4f);
             }
 
-            TabLayout.Tab tabTest = tabLayout.getTabAt(2);
-            if (tabTest != null && tabTest.view != null) {
-                tabTest.view.setEnabled(hasTest);
-                tabTest.view.setAlpha(hasTest ? 1.0f : 0.4f);
-            }
-
-            int selectedIndex = 0;
-            if ("kodik".equals(activeTab)) selectedIndex = 1;
-            else if ("test".equals(activeTab)) selectedIndex = 2;
+            int selectedIndex = "kodik".equals(activeTab) ? 1 : 0;
 
             if (tabLayout.getSelectedTabPosition() != selectedIndex) {
                 isProgrammaticTabSelect = true;
@@ -415,8 +486,6 @@ public class VoiceoverBottomSheet extends BottomSheetDialog {
     private List<EpisodeResponse.PlayerData> getCurrentListForActiveTab() {
         if ("kodik".equals(activeTab)) {
             return kodikPlayers;
-        } else if ("test".equals(activeTab)) {
-            return testPlayers;
         }
         return animelibPlayers;
     }
