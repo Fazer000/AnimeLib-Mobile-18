@@ -638,25 +638,7 @@ public class ApiService {
                             } else if (response.code() == 401) {
                                 safeRunOnUiThread(() -> callback.onError("Ошибка 401: Токен недействителен или сессия истекла. Переавторизуйтесь на сайте."));
                             } else {
-                                String serverMsg = "";
-                                if (responseBody != null && (responseBody.trim().startsWith("<!DOCTYPE") || responseBody.trim().startsWith("<html"))) {
-                                    serverMsg = "Ошибка сервера (" + response.code() + ")";
-                                } else {
-                                    try {
-                                        com.google.gson.JsonObject errObj = gson.fromJson(responseBody, com.google.gson.JsonObject.class);
-                                        if (errObj != null) {
-                                            if (errObj.has("message")) {
-                                                serverMsg = errObj.get("message").getAsString();
-                                            }
-                                            if (errObj.has("errors")) {
-                                                serverMsg += " | " + errObj.get("errors").toString();
-                                            }
-                                        }
-                                    } catch (Exception ignored) {
-                                        serverMsg = responseBody != null ? responseBody : "";
-                                    }
-                                }
-                                String err = "Ошибка (" + response.code() + "): " + serverMsg;
+                                String err = extractServerErrorMessage(responseBody, response.code());
                                 safeRunOnUiThread(() -> callback.onError(err));
                             }
                         } catch (Exception e) {
@@ -726,23 +708,7 @@ public class ApiService {
                             } else if (response.code() == 401) {
                                 safeRunOnUiThread(() -> callback.onError("Ошибка 401: Необходима авторизация. Войдите в аккаунт."));
                             } else {
-                                String serverMsg = "";
-                                if (responseBody != null && (responseBody.trim().startsWith("<!DOCTYPE") || responseBody.trim().startsWith("<html"))) {
-                                    serverMsg = " Ошибка сервера (" + response.code() + ")";
-                                } else {
-                                    try {
-                                        com.google.gson.JsonObject errObj = gson.fromJson(responseBody, com.google.gson.JsonObject.class);
-                                        if (errObj != null) {
-                                            if (errObj.has("message")) {
-                                                serverMsg = ": " + errObj.get("message").getAsString();
-                                            }
-                                            if (errObj.has("errors")) {
-                                                serverMsg += " " + errObj.get("errors").toString();
-                                            }
-                                        }
-                                    } catch (Exception ignored) {}
-                                }
-                                String err = "Ошибка голосования (" + response.code() + ")" + serverMsg;
+                                String err = extractServerErrorMessage(responseBody, response.code());
                                 safeRunOnUiThread(() -> callback.onError(err));
                             }
                         } catch (Exception e) {
@@ -797,25 +763,7 @@ public class ApiService {
                             } else if (response.code() == 403) {
                                 safeRunOnUiThread(() -> callback.onError("Ошибка 403: Вы можете удалять только свои комментарии."));
                             } else {
-                                String serverMsg = "";
-                                if (responseBody != null && (responseBody.trim().startsWith("<!DOCTYPE") || responseBody.trim().startsWith("<html"))) {
-                                    serverMsg = "Ошибка сервера (" + response.code() + ")";
-                                } else {
-                                    try {
-                                        com.google.gson.JsonObject errObj = gson.fromJson(responseBody, com.google.gson.JsonObject.class);
-                                        if (errObj != null) {
-                                            if (errObj.has("message")) {
-                                                serverMsg = errObj.get("message").getAsString();
-                                            }
-                                            if (errObj.has("errors")) {
-                                                serverMsg += " | " + errObj.get("errors").toString();
-                                            }
-                                        }
-                                    } catch (Exception ignored) {
-                                        serverMsg = responseBody != null ? responseBody : "";
-                                    }
-                                }
-                                String err = "Ошибка (" + response.code() + "): " + serverMsg;
+                                String err = extractServerErrorMessage(responseBody, response.code());
                                 safeRunOnUiThread(() -> callback.onError(err));
                             }
                         } catch (Exception e) {
@@ -1524,6 +1472,58 @@ public class ApiService {
                 callback.onError("Request error: " + e.getMessage());
             }
         });
+    }
+
+    private String extractServerErrorMessage(String responseBody, int responseCode) {
+        if (responseBody != null && !responseBody.trim().isEmpty()) {
+            String trimmed = responseBody.trim();
+            if (trimmed.startsWith("<!DOCTYPE") || trimmed.startsWith("<html")) {
+                return "Ошибка сервера (" + responseCode + ")";
+            }
+            try {
+                com.google.gson.JsonObject errObj = gson.fromJson(trimmed, com.google.gson.JsonObject.class);
+                if (errObj != null) {
+                    // 1. Проверяем data.toast.message (структура {"data":{"toast":{"type":"error","message":"..."}}})
+                    if (errObj.has("data") && errObj.get("data").isJsonObject()) {
+                        com.google.gson.JsonObject dataObj = errObj.getAsJsonObject("data");
+                        if (dataObj.has("toast") && dataObj.get("toast").isJsonObject()) {
+                            com.google.gson.JsonObject toastObj = dataObj.getAsJsonObject("toast");
+                            if (toastObj.has("message") && !toastObj.get("message").isJsonNull()) {
+                                String msg = toastObj.get("message").getAsString();
+                                if (!msg.trim().isEmpty()) {
+                                    return msg;
+                                }
+                            }
+                        }
+                    }
+                    // 2. Проверяем toast.message на верхнем уровне
+                    if (errObj.has("toast") && errObj.get("toast").isJsonObject()) {
+                        com.google.gson.JsonObject toastObj = errObj.getAsJsonObject("toast");
+                        if (toastObj.has("message") && !toastObj.get("message").isJsonNull()) {
+                            String msg = toastObj.get("message").getAsString();
+                            if (!msg.trim().isEmpty()) {
+                                return msg;
+                            }
+                        }
+                    }
+                    // 3. Проверяем message и errors
+                    String serverMsg = "";
+                    if (errObj.has("message") && !errObj.get("message").isJsonNull()) {
+                        serverMsg = errObj.get("message").getAsString();
+                    }
+                    if (errObj.has("errors") && !errObj.get("errors").isJsonNull()) {
+                        String errorsStr = errObj.get("errors").toString();
+                        serverMsg += (serverMsg.isEmpty() ? "" : " | ") + errorsStr;
+                    }
+                    if (!serverMsg.isEmpty()) {
+                        return serverMsg;
+                    }
+                }
+            } catch (Exception ignored) {
+                return trimmed;
+            }
+        }
+        return "Ошибка (" + responseCode + ")";
     }
 
     public void shutdown() {
