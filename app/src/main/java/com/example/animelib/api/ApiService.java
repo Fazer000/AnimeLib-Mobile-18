@@ -519,6 +519,22 @@ public class ApiService {
                 "&post_type=episodes&sort_by=" + sortBy + "&sort_type=" + sortDir;
     }
 
+    private void copyToClipboard(String text) {
+        if (context == null) return;
+        safeRunOnUiThread(() -> {
+            try {
+                android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                if (clipboard != null) {
+                    android.content.ClipData clip = android.content.ClipData.newPlainText("Comment Request Data", text);
+                    clipboard.setPrimaryClip(clip);
+                    android.widget.Toast.makeText(context, "Данные отправки скопированы в буфер обмена", android.widget.Toast.LENGTH_SHORT).show();
+                }
+            } catch (Exception e) {
+                Log.e("ApiService", "Failed to copy to clipboard", e);
+            }
+        });
+    }
+
     /**
      * Отправка нового комментария или ответа к эпизоду
      */
@@ -572,6 +588,18 @@ public class ApiService {
                     @Override
                     public void onFailure(@NonNull Call call, @NonNull IOException e) {
                         Log.e("ApiService", "Post comment failed", e);
+
+                        StringBuilder debugInfo = new StringBuilder();
+                        debugInfo.append("URL: ").append(apiUrl).append("\n\n");
+                        debugInfo.append("Headers:\n");
+                        for (String name : request.headers().names()) {
+                            debugInfo.append(name).append(": ").append(request.headers().get(name)).append("\n");
+                        }
+                        debugInfo.append("Content-Type: application/json; charset=utf-8\n");
+                        debugInfo.append("\nRequest Body:\n").append(jsonString).append("\n\n");
+                        debugInfo.append("Error:\n").append(e.getMessage());
+                        copyToClipboard(debugInfo.toString());
+
                         safeRunOnUiThread(() -> callback.onError("Ошибка сети: " + e.getMessage()));
                     }
 
@@ -580,6 +608,19 @@ public class ApiService {
                         try (response) {
                             String responseBody = response.body() != null ? response.body().string() : "";
                             Log.d("ApiService", "Post comment response (" + response.code() + "): " + responseBody);
+
+                            StringBuilder debugInfo = new StringBuilder();
+                            debugInfo.append("URL: ").append(apiUrl).append("\n\n");
+                            debugInfo.append("Headers:\n");
+                            for (String name : request.headers().names()) {
+                                debugInfo.append(name).append(": ").append(request.headers().get(name)).append("\n");
+                            }
+                            debugInfo.append("Content-Type: application/json; charset=utf-8\n");
+                            debugInfo.append("\nRequest Body:\n").append(jsonString).append("\n\n");
+                            debugInfo.append("Response Status: ").append(response.code()).append("\n\n");
+                            debugInfo.append("Response Body:\n").append(responseBody);
+                            copyToClipboard(debugInfo.toString());
+
                             if (response.isSuccessful()) {
                                 CommentsResponse.CommentItem commentItem = null;
                                 try {
