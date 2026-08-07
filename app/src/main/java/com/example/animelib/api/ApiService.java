@@ -550,10 +550,6 @@ public class ApiService {
                         requestBody.addProperty("root_id", parentCommentId);
                     }
                     requestBody.addProperty("comment_level", commentLevel > 0 ? commentLevel : 1);
-                } else {
-                    requestBody.add("parent_comment", com.google.gson.JsonNull.INSTANCE);
-                    requestBody.add("root_id", com.google.gson.JsonNull.INSTANCE);
-                    requestBody.addProperty("comment_level", 0);
                 }
 
                 String jsonString = gson.toJson(requestBody);
