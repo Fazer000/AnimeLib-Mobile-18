@@ -99,16 +99,25 @@ public class MainActivity extends AppCompatActivity {
     private com.google.android.material.button.MaterialButton btnRetryLoad;
     private View btnOpenDownloads;
     private String lastFailedUrl = null;
+    private boolean isUrlInputShowing = false;
 
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Применяем тему синхронно из SharedPreferences до инфлейта разметки
+        int initialTheme = ThemeUtils.getSavedThemePreference(this);
+        ThemeUtils.applyThemeToActivity(this, initialTheme);
+
         SplashScreen.installSplashScreen(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (savedInstanceState != null) {
+            isUrlInputShowing = savedInstanceState.getBoolean("isUrlInputShowing", false);
+        }
 
         webView = findViewById(R.id.webView);
         spinner = findViewById(R.id.spinner);
@@ -267,12 +276,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("isUrlInputShowing", isUrlInputShowing);
+    }
+
     private void checkAndLoadUrl() {
+        if (isUrlInputShowing) {
+            return;
+        }
         viewModel.getSettings().observe(this, settings -> {
-            if (settings != null && settings.getSiteUrl() != null) {
+            if (settings != null && settings.getSiteUrl() != null && !settings.getSiteUrl().trim().isEmpty()) {
                 // URL найден в базе данных, загружаем его
                 loadUrl(settings.getSiteUrl());
-            } else {
+            } else if (!isUrlInputShowing) {
                 // URL не найден, показываем активность для ввода
                 showUrlInputActivity();
             }
@@ -302,6 +320,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showUrlInputActivity() {
+        if (isUrlInputShowing) {
+            return;
+        }
+        isUrlInputShowing = true;
         Intent intent = new Intent(this, UrlInputActivity.class);
         startActivityForResult(intent, REQUEST_URL_INPUT);
     }
@@ -1277,20 +1299,25 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         
         if (requestCode == REQUEST_URL_INPUT) {
+            isUrlInputShowing = false;
             if (resultCode == RESULT_OK && data != null) {
                 String siteUrl = data.getStringExtra("site_url");
                 if (siteUrl != null && !siteUrl.isEmpty()) {
                     // Сохраняем URL в ViewModel
                     viewModel.saveSettings(siteUrl);
                     // Загружаем URL
-                    loadUrl(siteUrl);
+                    if (webView != null && (webView.getUrl() == null || "about:blank".equals(webView.getUrl()))) {
+                        loadUrl(siteUrl);
+                    }
                     Log.d("MainActivity", "URL received from UrlInputActivity: " + siteUrl);
                 }
             } else {
-                // Пользователь отменил ввод, показываем сообщение
-                CustomToast.showWarning(this, "Для работы приложения необходимо указать URL сайта");
-                // Показываем активность снова
-                showUrlInputActivity();
+                if (viewModel.getSettings().getValue() == null || viewModel.getSettings().getValue().getSiteUrl() == null) {
+                    // Пользователь отменил ввод, показываем сообщение
+                    CustomToast.showWarning(this, "Для работы приложения необходимо указать URL сайта");
+                    // Показываем активность снова
+                    showUrlInputActivity();
+                }
             }
         }
     }

@@ -580,7 +580,7 @@ public class ApiService {
                 Request request = new Request.Builder()
                         .url(apiUrl)
                         .addHeader("Authorization", "Bearer " + getBearerToken())
-                        .addHeader("Referer", "https://animelib.org/")
+                        .addHeader("Referer", "https://v5.animelib.org/")
                         .post(body)
                         .build();
 

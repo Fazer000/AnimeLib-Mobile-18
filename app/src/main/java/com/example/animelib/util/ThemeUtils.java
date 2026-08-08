@@ -71,6 +71,6 @@ public class ThemeUtils {
 
     public static int getSavedThemePreference(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getInt(THEME_MODE, THEME_SYSTEM); // по умолчанию системная тема
+        return preferences.getInt(THEME_MODE, THEME_LIGHT); // по умолчанию светлая тема
     }
 }

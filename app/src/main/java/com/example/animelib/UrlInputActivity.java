@@ -31,6 +31,9 @@ public class UrlInputActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        int initialTheme = ThemeUtils.getSavedThemePreference(this);
+        ThemeUtils.applyThemeToActivity(this, initialTheme);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_url_input);
 
@@ -61,7 +64,7 @@ public class UrlInputActivity extends AppCompatActivity {
         urlEditText = findViewById(R.id.urlEditText);
         saveButton = findViewById(R.id.saveButton);
 
-        urlEditText.setText("https://animelib.org");
+        urlEditText.setText("https://v5.animelib.org");
 
         // Кнопка активна по умолчанию, так как в поле уже есть валидный URL
         saveButton.setEnabled(true);
